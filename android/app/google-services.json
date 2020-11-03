@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "655142877489",
+    "firebase_url": "https://rohan-map2020-myguide-c2a58.firebaseio.com",
+    "project_id": "rohan-map2020-myguide-c2a58",
+    "storage_bucket": "rohan-map2020-myguide-c2a58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655142877489:android:392e1c1fca9a0658629810",
+        "android_client_info": {
+          "package_name": "edu.uco.ryadav1.map2020.myGuide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655142877489-7mcvg0qj2sopq7iganh60s5117i7rrgk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYYahdEGuoiDzJXyRCPQqtR4ZwW9x_x90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "655142877489-7mcvg0qj2sopq7iganh60s5117i7rrgk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
