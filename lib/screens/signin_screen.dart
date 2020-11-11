@@ -6,7 +6,7 @@ import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/home_screen.dart';
 import 'package:myGuide/screens/signup_screen.dart';
-import 'package:myGuide/screens/passwordreset_screen.dart';
+import 'package:myGuide/screens/pass-reset_screen.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -45,22 +45,23 @@ class _SignInState extends State<SignInScreen> {
                 Stack(
                   children: <Widget>[
                     SizedBox(
-                      height: 50.0,
+                      height: 0.0,
                     ),
                     Image.asset(
                       'assets/images/translation.jpg',
-                      width: 300,
-                      height: 300,
+                      width: 210,
+                      height: 210,
                     ),
                     Positioned(
-                      top: 270.0,
-                      left: 90.0,
+                      top: 185.0,
+                      left: 50.0,
                       child: Text(
                         'myGuide',
                         style: TextStyle(
                           color: Colors.blue[600],
                           fontSize: 25.0,
                           fontFamily: 'Audiowide',
+                          
                         ),
                       ),
                     ),

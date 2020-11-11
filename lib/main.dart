@@ -7,7 +7,7 @@ import 'package:myGuide/screens/settings_screen.dart';
 import 'package:myGuide/screens/add_screen.dart';
 import 'package:myGuide/screens/signin_screen.dart';
 import 'package:myGuide/screens/signup_screen.dart';
-import 'package:myGuide/screens/passwordreset_screen.dart';
+import 'package:myGuide/screens/pass-reset_screen.dart';
 
 
 void main () {
@@ -19,6 +19,13 @@ class myGuide extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+       scaffoldBackgroundColor: Colors.white,
+       primaryColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white
+        ),
+      ),
       initialRoute: SignInScreen.routeName,
       routes: {
         SignInScreen.routeName: (context) => SignInScreen(),

@@ -4,13 +4,11 @@ import 'package:myGuide/screens/view/mydialog.dart';
 
 class SignUpScreen extends StatefulWidget {
   
-  static const routeName = '/signInScreen/signUpScreen';
-  
+  static const routeName = '/signInScreen/signUpScreen';  
   @override
   State<StatefulWidget> createState() {
     return _SignUpState();
   }
-
 }
 
 class _SignUpState extends State<SignUpScreen> {
@@ -77,7 +75,6 @@ class _SignUpState extends State<SignUpScreen> {
       )
     );
   }
-
 }
 
 class _Controller {
@@ -115,6 +112,7 @@ class _Controller {
   void onSavedEmail(String value) {
     this.email = value;
   }
+  
   String validatorPassword(String value){
     if (value.length<6) return 'min 6 chars';
     else return null;

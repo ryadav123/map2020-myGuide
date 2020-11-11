@@ -1,14 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:myGuide/screens/signin_screen.dart';
-//import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  
-  static const routeName = '/signInScreen/ForgotPasswordScreen';
-  
+class ForgotPasswordScreen extends StatefulWidget {  
+  static const routeName = '/signInScreen/ForgotPasswordScreen';  
   @override
   State<StatefulWidget> createState() {
     return _ForgotPasswordState();

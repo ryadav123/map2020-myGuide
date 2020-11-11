@@ -125,7 +125,7 @@ class _AddfromImageState extends State<AddfromImageScreen> {
                 
                 TextFormField(
                   decoration: InputDecoration(
-                    hintText: 'SharedWith (comma separated email list)',
+                    hintText: 'Translation',
                   ),
                   autocorrect: true,
                   keyboardType: TextInputType.multiline,
