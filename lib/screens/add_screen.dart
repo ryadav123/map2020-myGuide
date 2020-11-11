@@ -24,12 +24,19 @@ class _AddState extends State<AddScreen> {
   FirebaseUser user;
   List<MyTranslation> translations;
   var _initialText;
-  var _languages = ['English','Hindi','Nepali','Maithli',];
+  var _languages = [
+    'English',
+    'Hindi',
+    'Nepali',
+    'Maithli',
+  ];
   var _currentItemSelected = 'English';
   GoogleTranslator translator = GoogleTranslator();
   final lang = TextEditingController();
   var out;
-  
+  String _transtitle = 'English-';
+  String _translateto;
+
   @override
   void initState() {
     super.initState();
@@ -41,45 +48,39 @@ class _AddState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
-        user ??= args['user'];
-        translations ??= args['photoMemoList'];
+    user ??= args['user'];
+    translations ??= args['photoMemoList'];
 
     return Scaffold(
-        
         appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: AppBar(
-          actions: [
-            IconButton(
-              onPressed: con.save,
-              icon: Icon(Icons.check),
-            )
-          ],
-          title: Center(
-            child: Text(
-              'Add Translation',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+          preferredSize: Size.fromHeight(100),
+          child: AppBar(
+            actions: [
+              IconButton(
+                onPressed: con.save,
+                icon: Icon(Icons.check),
+              )
+            ],
+            title: Center(
+              child: Text(
+                'Add Translation',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          elevation: 0,
-          flexibleSpace: ClipPath(
-            clipper: _AppBarClipper(),
-            child: Container(
-                decoration: BoxDecoration(
-              color: Colors.blue,
-              //   gradient: LinearGradient(
-              // colors: [Color(0xFF696D77), Color(0xFF292C36)],
-              // begin: Alignment.bottomRight,
-              // end: Alignment.topLeft,
-              // tileMode: TileMode.clamp,
-            )),
+            elevation: 0,
+            flexibleSpace: ClipPath(
+              clipper: _AppBarClipper(),
+              child: Container(
+                  decoration: BoxDecoration(
+                color: Colors.blue,
+              )),
+            ),
           ),
         ),
-      ),
         body: Form(
           key: formKey,
           child: SingleChildScrollView(
@@ -88,16 +89,18 @@ class _AddState extends State<AddScreen> {
                 Stack(
                   children: <Widget>[
                     Container(
-                      height: 200,
-                      width: MediaQuery.of(context).size.width/2,
+                      height: 100,
+                      width: MediaQuery.of(context).size.width / 4,
                       child: image == null
-                          ? Icon(Icons.photo_library, size: 250.0)
+                          ? Icon(Icons.photo_library, size: 100.0)
                           : Image.file(image, fit: BoxFit.fill),
                     ),
                     Positioned(
                       right: 0.0,
                       bottom: 0.0,
                       child: Container(
+                        width: 25,
+                        height: 25,
                         color: Colors.blue[200],
                         child: PopupMenuButton<String>(
                           onSelected: con.getPicture,
@@ -126,34 +129,57 @@ class _AddState extends State<AddScreen> {
                     ),
                   ],
                 ),
-                con.uploadProgressMessage == null ?
-                SizedBox(height: 1.0,): Text(con.uploadProgressMessage,style: TextStyle(fontSize: 20.0)),
+                con.uploadProgressMessage == null
+                    ? SizedBox(
+                        height: 1.0,
+                      )
+                    : Text(con.uploadProgressMessage,
+                        style: TextStyle(fontSize: 20.0)),
                 RaisedButton(
                   child: Text(
                     'Read Text',
-                    style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    style: TextStyle(fontSize: 15.0, color: Colors.white),
                   ),
                   color: Colors.blue,
                   onPressed: con.readText,
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                  hintText: 'Title',
-                  ),
-                  autocorrect: true,
-                  validator: con.validatorTitle,
-                  onSaved: con.onSavedTitle,
+                _translateto == null ?
+                Text(_transtitle + 'N/A',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold,fontSize: 20),
+                ):
+                Text(_transtitle + _translateto,
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold,fontSize: 20),
                 ),
-                TextField(
-                  controller: lang,
-                  decoration: InputDecoration(
-                    hintText: 'Text',
+                // TextFormField(
+                //   decoration: InputDecoration(
+                //   hintText: 'Title',
+                //   ),
+                //   autocorrect: true,
+                //   validator: con.validatorTitle,
+                //   onSaved: con.onSavedTitle,
+                // ),
+                Row(
+                  children: [
+                    Text('Type, Read or Speak your text here',style: TextStyle(fontWeight: FontWeight.bold),),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: lang,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                    //  labelText: 'Text',
+                     hintText: 'Text',
+                    ),
+                    // initialValue: _initialText == null ? 'nullba': 'Rohan',
+                    autocorrect: true,
+                    keyboardType: TextInputType.multiline,
+                    //  validator: con.validatorText,
+                    //  onSaved: con.onSavedText,
                   ),
-                 // initialValue: _initialText == null ? 'nullba': 'Rohan',
-                  autocorrect: true,
-                  keyboardType: TextInputType.multiline,
-                //  validator: con.validatorText,
-                //  onSaved: con.onSavedText,
                 ),
                 // TextFormField(
                 //  // controller: temp_text,
@@ -168,31 +194,39 @@ class _AddState extends State<AddScreen> {
                 // ),
                 Row(
                   children: [
-                    Text('Convert to:'),
-                    SizedBox(width: 10,),
+                    Text('Convert to:',style: TextStyle(fontWeight:FontWeight.bold),),
+                    SizedBox(
+                      width: 100,
+                    ),
                     DropdownButton<String>(
-                        items: _languages.map((String dropDownStringItem) {
-                          return DropdownMenuItem<String>(
-                              value: dropDownStringItem ,
-                              child: Text(dropDownStringItem),
-                          );
-                        }).toList(),
-                        onChanged: (String newValueSelected) {
-                          setState(() {
-                            _currentItemSelected = newValueSelected;
-                          });
-                        },
-                        value: _currentItemSelected,
+                      items: _languages.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(dropDownStringItem),
+                        );
+                      }).toList(),
+                      onChanged: (String newValueSelected) {
+                        setState(() {
+                          _currentItemSelected = newValueSelected;
+                          _translateto = newValueSelected;
+                        });
+                      },
+                      value: _currentItemSelected,
                     ),
                   ],
                 ),
                 RaisedButton(
                   child: Text(
                     'Translate',
-                    style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    style: TextStyle(fontSize: 15.0, color: Colors.white),
                   ),
                   color: Colors.blue,
                   onPressed: con.translate,
+                ),
+                Row(
+                  children: [
+                    Text('Translation:',style: TextStyle(fontWeight:FontWeight.bold),),
+                  ],
                 ),
                 Text(out.toString()),
                 // TextFormField(
@@ -218,21 +252,20 @@ class _Controller {
   String title;
   String text;
   var temtext;
-  
+
   List<String> sharedWith = [];
   String uploadProgressMessage;
 
   void translate() {
-    _state.translator.translate(_state.lang.text, to:'hi').then((output) {
+    _state.translator.translate(_state.lang.text, to: 'hi').then((output) {
       _state.render(() {
         _state.out = output;
       });
-    });   
-
+    });
   }
 
   Future<void> readText() async {
-    sentence='';
+    sentence = '';
     FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(_state.image);
     TextRecognizer recognizedText = FirebaseVision.instance.textRecognizer();
     VisionText readText = await recognizedText.processImage(ourImage);
@@ -240,13 +273,15 @@ class _Controller {
     for (TextBlock block in readText.blocks) {
       for (TextLine line in block.lines) {
         for (TextElement word in line.elements) {
-         // print(word.text);
+          // print(word.text);
           sentence = '$sentence ${word.text}';
         }
       }
     }
     print(sentence);
-    _state.render(() {_state._initialText = sentence;});
+    _state.render(() {
+      _state._initialText = sentence;
+    });
     print(_state._initialText);
   }
 
@@ -255,51 +290,50 @@ class _Controller {
       return;
     }
     _state.formKey.currentState.save();
-    
+
     try {
-    MyDialog.circularProgressStart(_state.context);
-    // 1. upload pic to Storage
-    Map <String, String> photoInfo = await FirebaseController.uploadStorage(
-        image: _state.image,
-        uid: _state.user.uid,
+      MyDialog.circularProgressStart(_state.context);
+      // 1. upload pic to Storage
+      Map<String, String> photoInfo = await FirebaseController.uploadStorage(
+          image: _state.image,
+          uid: _state.user.uid,
+          sharedWith: sharedWith,
+          listener: (double progressPercentage) {
+            _state.render(() => uploadProgressMessage =
+                'Uploading: ${progressPercentage.toStringAsFixed(1)} %');
+          });
+
+      // 2. get image labels by ML kit
+      // _state.render(() => uploadProgressMessage = 'ML Image Labeler started!');
+      // List<String> labels = await FirebaseController.getImageLabels(_state.image);
+      // print('*********labels:'+labels.toString());
+
+      // 3. save photomemo doc to Firestore
+      var p = MyTranslation(
+        title: title,
+        orgtext: text,
+        photoPath: photoInfo['path'],
+        photoURL: photoInfo['url'],
+        createdBy: _state.user.email,
         sharedWith: sharedWith,
-        listener: (double progressPercentage) {
-          _state.render(() => uploadProgressMessage = 'Uploading: ${progressPercentage.toStringAsFixed(1)} %');
-        }
-        );
-        
-    // 2. get image labels by ML kit
-    // _state.render(() => uploadProgressMessage = 'ML Image Labeler started!');
-    // List<String> labels = await FirebaseController.getImageLabels(_state.image);
-    // print('*********labels:'+labels.toString());
+        updatedAt: DateTime.now(),
+        // imageLabels: labels,
+      );
 
-    // 3. save photomemo doc to Firestore
-    var p = MyTranslation(
-      title: title,
-      orgtext: text,
-      photoPath: photoInfo['path'],
-      photoURL: photoInfo['url'],
-      createdBy: _state.user.email,
-      sharedWith: sharedWith,
-      updatedAt: DateTime.now(),
-     // imageLabels: labels,
-    );
+      p.docId = await FirebaseController.addTranslation(p);
+      _state.translations.insert(0, p);
 
-    p.docId = await FirebaseController.addTranslation(p);
-    _state.translations.insert(0, p);
+      MyDialog.circularProgressEnd(_state.context);
 
-    MyDialog.circularProgressEnd(_state.context);
-
-    Navigator.pop(_state.context);
+      Navigator.pop(_state.context);
     } catch (e) {
+      MyDialog.circularProgressEnd(_state.context);
 
-          MyDialog.circularProgressEnd(_state.context);
-
-        MyDialog.info(
-          context: _state.context,
-          title: 'Firebase Error',
-          content: e.message ?? e.toString(),
-        );
+      MyDialog.info(
+        context: _state.context,
+        title: 'Firebase Error',
+        content: e.message ?? e.toString(),
+      );
     }
   }
 
