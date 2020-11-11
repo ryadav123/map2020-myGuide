@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
@@ -25,14 +26,28 @@ class _AddState extends State<AddScreen> {
   List<MyTranslation> translations;
   var _initialText;
   var _languages = [
+    'Afrikaans',
+    'Albanian',
+    'Amharic',
+    'Arabic',
+    'Armenian',
+    'Azerbaijani',
+    'Basque',
+    'Belarusian',
+    'Bengali',
+    'Bosnian',
+    'Bulgarian',
+    'Catalan',
+    'Cebuano',
     'English',
     'Hindi',
     'Nepali',
     'Maithli',
   ];
-  var _currentItemSelected = 'English';
+  var _currentItemSelected = 'Afrikaans';
   GoogleTranslator translator = GoogleTranslator();
   final lang = TextEditingController();
+  final flutterTts = FlutterTts();
   var out;
   String _transtitle = 'English-';
   String _translateto;
@@ -143,15 +158,21 @@ class _AddState extends State<AddScreen> {
                   color: Colors.blue,
                   onPressed: con.readText,
                 ),
-                _translateto == null ?
-                Text(_transtitle + 'N/A',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold,fontSize: 20),
-                ):
-                Text(_transtitle + _translateto,
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold,fontSize: 20),
-                ),
+                _translateto == null
+                    ? Text(
+                        _transtitle + 'N/A',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      )
+                    : Text(
+                        _transtitle + _translateto,
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
                 // TextFormField(
                 //   decoration: InputDecoration(
                 //   hintText: 'Title',
@@ -162,7 +183,10 @@ class _AddState extends State<AddScreen> {
                 // ),
                 Row(
                   children: [
-                    Text('Type, Read or Speak your text here',style: TextStyle(fontWeight: FontWeight.bold),),
+                    Text(
+                      'Type, Read or Speak your text here',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
                 Padding(
@@ -171,8 +195,8 @@ class _AddState extends State<AddScreen> {
                     controller: lang,
                     maxLines: 3,
                     decoration: InputDecoration(
-                    //  labelText: 'Text',
-                     hintText: 'Text',
+                      //  labelText: 'Text',
+                      hintText: 'Text',
                     ),
                     // initialValue: _initialText == null ? 'nullba': 'Rohan',
                     autocorrect: true,
@@ -181,6 +205,20 @@ class _AddState extends State<AddScreen> {
                     //  onSaved: con.onSavedText,
                   ),
                 ),
+                IconButton(
+                  iconSize: 35,
+                  color: Colors.black,
+                  icon: Icon(Icons.speaker_phone),
+                  onPressed: () => con.speak(lang.text),
+                ),
+                // RaisedButton(
+                //   child: Text(
+                //     'Spaek',
+                //     style: TextStyle(fontSize: 15.0, color: Colors.white),
+                //   ),
+                //   color: Colors.blue,
+                //   onPressed: () => con.speak(lang.text),
+                // ),
                 // TextFormField(
                 //  // controller: temp_text,
                 //   decoration: InputDecoration(
@@ -194,7 +232,10 @@ class _AddState extends State<AddScreen> {
                 // ),
                 Row(
                   children: [
-                    Text('Convert to:',style: TextStyle(fontWeight:FontWeight.bold),),
+                    Text(
+                      'Convert to:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(
                       width: 100,
                     ),
@@ -225,10 +266,19 @@ class _AddState extends State<AddScreen> {
                 ),
                 Row(
                   children: [
-                    Text('Translation:',style: TextStyle(fontWeight:FontWeight.bold),),
+                    Text(
+                      'Translation:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
                 Text(out.toString()),
+               IconButton(
+                  iconSize: 35,
+                  color: Colors.black,
+                  icon: Icon(Icons.speaker_phone),
+                  onPressed: () => con.speak(out.text),
+                ),
                 // TextFormField(
                 //   decoration: InputDecoration(
                 //     hintText: 'Translation',
@@ -256,12 +306,41 @@ class _Controller {
   List<String> sharedWith = [];
   String uploadProgressMessage;
 
+  Future<void> speak(String value) async {
+   // print(_state.lang.text);
+    await _state.flutterTts.setVolume(1000);
+    await _state.flutterTts.setPitch(1.0);
+    await _state.flutterTts.speak(value);
+  }
+
   void translate() {
-    _state.translator.translate(_state.lang.text, to: 'hi').then((output) {
-      _state.render(() {
-        _state.out = output;
+    String transcode;
+    try {
+      if (_state._translateto == 'Afrikaans') {
+        transcode = 'af';
+      } else if (_state._translateto == 'English') {
+        transcode = 'en';
+      } else if (_state._translateto == 'Hindi') {
+        transcode = 'hi';
+      } else if (_state._translateto == 'Nepali') {
+        transcode = 'ne';
+      } else {
+        transcode = null;
+      }
+      _state.translator
+          .translate(_state.lang.text, to: transcode)
+          .then((output) {
+        _state.render(() {
+          _state.out = output;
+        });
       });
-    });
+    } catch (e) {
+      MyDialog.info(
+        context: _state.context,
+        title: 'Translation Error',
+        content: e.message ?? e.toString(),
+      );
+    }
   }
 
   Future<void> readText() async {
@@ -303,12 +382,7 @@ class _Controller {
                 'Uploading: ${progressPercentage.toStringAsFixed(1)} %');
           });
 
-      // 2. get image labels by ML kit
-      // _state.render(() => uploadProgressMessage = 'ML Image Labeler started!');
-      // List<String> labels = await FirebaseController.getImageLabels(_state.image);
-      // print('*********labels:'+labels.toString());
-
-      // 3. save photomemo doc to Firestore
+     // 3. save photomemo doc to Firestore
       var p = MyTranslation(
         title: title,
         orgtext: text,

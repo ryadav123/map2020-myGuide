@@ -39,5 +39,4 @@ class myGuide extends StatelessWidget {
       }
     );
   }
-
 }
