@@ -20,17 +20,17 @@ class FirebaseController {
     await FirebaseAuth.instance.signOut();
   }
 
-  static Future<List<Translation>> getPhotoMemos(String email) async {
+  static Future<List<MyTranslation>> getPhotoMemos(String email) async {
     QuerySnapshot querySnapshot = await Firestore.instance
-        .collection(Translation.COLLECTION)
-        .where(Translation.CREATED_BY, isEqualTo: email)
-        .orderBy(Translation.UPDATED_AT, descending: true)
+        .collection(MyTranslation.COLLECTION)
+        .where(MyTranslation.CREATED_BY, isEqualTo: email)
+        .orderBy(MyTranslation.UPDATED_AT, descending: true)
         .getDocuments();
 
-    var result = <Translation>[];
+    var result = <MyTranslation>[];
     if (querySnapshot != null && querySnapshot.documents.length != 0) {
       for (var doc in querySnapshot.documents) {
-        result.add(Translation.deserialize(doc.data, doc.documentID));
+        result.add(MyTranslation.deserialize(doc.data, doc.documentID));
       }
     }
     return result;
@@ -74,7 +74,7 @@ class FirebaseController {
     @required List<dynamic> sharedWith,
     @required Function listener,
   }) async {
-    filePath ??= '${Translation.IMAGE_FOLDER}/$uid/${DateTime.now()}';
+    filePath ??= '${MyTranslation.IMAGE_FOLDER}/$uid/${DateTime.now()}';
 
     StorageUploadTask task =
         FirebaseStorage.instance.ref().child(filePath).putFile(image);
@@ -90,10 +90,10 @@ class FirebaseController {
     return {'url': url, 'path': filePath};
   }
 
-  static Future<String> addTranslation(Translation translation) async {
+  static Future<String> addTranslation(MyTranslation translation) async {
     translation.updatedAt = DateTime.now();
     DocumentReference ref = await Firestore.instance
-        .collection(Translation.COLLECTION)
+        .collection(MyTranslation.COLLECTION)
         .add(translation.serialize());
     return ref.documentID;
   }
@@ -114,29 +114,29 @@ class FirebaseController {
   //   return labels;
   // }
 
-  static Future<void> deletePhotoMemo(Translation photoMemo) async {
+  static Future<void> deletePhotoMemo(MyTranslation photoMemo) async {
     await Firestore.instance
-        .collection(Translation.COLLECTION)
+        .collection(MyTranslation.COLLECTION)
         .document(photoMemo.docId)
         .delete();
     await FirebaseStorage.instance.ref().child(photoMemo.photoPath).delete();
   }
 
-  static Future<List<Translation>> searchImages({
+  static Future<List<MyTranslation>> searchImages({
     @required String email,
     @required String imageLabel,
   }) async {
     QuerySnapshot querySnapshot = await Firestore.instance
-        .collection(Translation.COLLECTION)
-        .where(Translation.CREATED_BY, isEqualTo: email)
+        .collection(MyTranslation.COLLECTION)
+        .where(MyTranslation.CREATED_BY, isEqualTo: email)
       //  .where(PhotoMemo.IMAGE_LABELS, arrayContains: imageLabel.toLowerCase())
-        .orderBy(Translation.UPDATED_AT, descending: true)
+        .orderBy(MyTranslation.UPDATED_AT, descending: true)
         .getDocuments();
 
-    var result = <Translation>[];
+    var result = <MyTranslation>[];
     if (querySnapshot != null && querySnapshot.documents.length != 0) {
       for (var doc in querySnapshot.documents) {
-        result.add(Translation.deserialize(doc.data, doc.documentID));
+        result.add(MyTranslation.deserialize(doc.data, doc.documentID));
       }
     }
     return result;
@@ -183,7 +183,7 @@ class FirebaseController {
     updateInfo.displayName = displayName;
     if (image != null) {
       //1. upload the picture
-      String filePath = '${Translation.PROFILE_FOLDER}/${user.uid}/${user.uid}';
+      String filePath = '${MyTranslation.PROFILE_FOLDER}/${user.uid}/${user.uid}';
       StorageUploadTask uploadTask =
           FirebaseStorage.instance.ref().child(filePath).putFile(image);
     uploadTask.events.listen((event) {

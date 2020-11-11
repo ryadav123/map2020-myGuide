@@ -170,7 +170,7 @@ class _Controller {
     // sign in succeedd
     // 1.  read all translations from firebase
     try {
-      List<Translation> translations =
+      List<MyTranslation> translations =
           await FirebaseController.getPhotoMemos(user.email);
       MyDialog.circularProgressEnd(_state.context);
       // 2.  navigate to Home screen to display photomemo

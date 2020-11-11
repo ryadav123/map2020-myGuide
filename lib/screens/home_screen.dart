@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/add_screen.dart';
-import 'package:myGuide/screens/addfromimage_screen.dart';
 //import 'package:photomemo/screens/detailed_screen.dart';
 import 'package:myGuide/screens/settings_screen.dart';
 //import 'package:photomemo/screens/sharedwith_screen.dart';
@@ -25,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   _Controller con;
   FirebaseUser user;
-  List<Translation> translations;
+  List<MyTranslation> translations;
   var formKey = GlobalKey<FormState>();
   // var _scaffoldKey = GlobalKey<ScaffoldState>();
   bool ascending = true;
@@ -171,9 +170,7 @@ class _HomeState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    onTap: () {
-                      print("Hello");
-                    },
+                    onTap: con.addTranslation,
                   ),
                   GestureDetector(
                     child: Card(
@@ -247,9 +244,7 @@ class _HomeState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    onTap: () {
-                      print("Hello");
-                    },
+                    onTap: con.addTranslation,
                   ),
                   GestureDetector(
                     child: Card(
@@ -447,11 +442,11 @@ class _Controller {
 
   void addTranslation() async {
     try {
-      await Navigator.pushNamed(_state.context, AddfromImageScreen.routeName,
+      await Navigator.pushNamed(_state.context, AddScreen.routeName,
           arguments: {
             'user': _state.user,
           });
-      Navigator.pop(_state.context); // close the drawer
+   //   Navigator.pop(_state.context); // close the drawer
     } catch (e) {}
   }
 
@@ -477,7 +472,7 @@ class _Controller {
 
   void addButton() async {
     // navigate to Addscreen
-    await Navigator.pushNamed(_state.context, AddfromImageScreen.routeName,
+    await Navigator.pushNamed(_state.context, AddScreen.routeName,
         arguments: {'user': _state.user, 'photoMemoList': _state.translations});
     _state.render(() {});
   }
@@ -493,7 +488,7 @@ class _Controller {
 
   void delete() async {
     try {
-      Translation photoMemo = _state.translations[delIndex];
+      MyTranslation photoMemo = _state.translations[delIndex];
       await FirebaseController.deletePhotoMemo(photoMemo);
       _state.render(() {
         _state.translations.removeAt(delIndex);

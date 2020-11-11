@@ -25,9 +25,34 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Forgot Password'),
-      // ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: AppBar(
+            title: Center(
+            child: Text(
+              'Password Reset',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          elevation: 0,
+          flexibleSpace: ClipPath(
+            clipper: _AppBarClipper(),
+            child: Container(
+                decoration: BoxDecoration(
+              color: Colors.blue,
+              //   gradient: LinearGradient(
+              // colors: [Color(0xFF696D77), Color(0xFF292C36)],
+              // begin: Alignment.bottomRight,
+              // end: Alignment.topLeft,
+              // tileMode: TileMode.clamp,
+            )),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0,30,0,0),
         child: SingleChildScrollView(
@@ -104,3 +129,19 @@ class _Controller {
     return null;
   }
   }
+
+  class _AppBarClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 50);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height - 50);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}

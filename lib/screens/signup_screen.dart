@@ -14,7 +14,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpState extends State<SignUpScreen> {
   _Controller con;
   var formKey = GlobalKey<FormState>();
-
+  bool _secureText = true;
   @override
   void initState() {
     super.initState();
@@ -25,9 +25,34 @@ class _SignUpState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Create an account'),
-      // ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: AppBar(
+            title: Center(
+            child: Text(
+              'Sign Up',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          elevation: 0,
+          flexibleSpace: ClipPath(
+            clipper: _AppBarClipper(),
+            child: Container(
+                decoration: BoxDecoration(
+              color: Colors.blue,
+              //   gradient: LinearGradient(
+              // colors: [Color(0xFF696D77), Color(0xFF292C36)],
+              // begin: Alignment.bottomRight,
+              // end: Alignment.topLeft,
+              // tileMode: TileMode.clamp,
+            )),
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0,30,0,0),
         child: SingleChildScrollView(
@@ -55,7 +80,13 @@ class _SignUpState extends State<SignUpScreen> {
                   padding: const EdgeInsets.fromLTRB(18,0,18,0),
                   child: TextFormField(
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(_secureText? Icons.remove_red_eye:Icons.security),
+                        onPressed: () {setState(() {
+                          _secureText = !_secureText;
+                        });}),
                       hintText: 'Password',
+                      
                     ),
                     obscureText: true,
                     autocorrect: false,
@@ -112,7 +143,7 @@ class _Controller {
   void onSavedEmail(String value) {
     this.email = value;
   }
-  
+
   String validatorPassword(String value){
     if (value.length<6) return 'min 6 chars';
     else return null;
@@ -121,4 +152,20 @@ class _Controller {
   void onSavedPassword(String value) {
     this.password = value;
   }
+}
+
+class _AppBarClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 50);
+    path.quadraticBezierTo(
+        size.width / 2, size.height, size.width, size.height - 50);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
