@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 
-class SignUpScreen extends StatefulWidget {
-  
+class SignUpScreen extends StatefulWidget {  
   static const routeName = '/signInScreen/signUpScreen';  
   @override
   State<StatefulWidget> createState() {
@@ -43,12 +42,7 @@ class _SignUpState extends State<SignUpScreen> {
             clipper: _AppBarClipper(),
             child: Container(
                 decoration: BoxDecoration(
-              color: Colors.blue,
-              //   gradient: LinearGradient(
-              // colors: [Color(0xFF696D77), Color(0xFF292C36)],
-              // begin: Alignment.bottomRight,
-              // end: Alignment.topLeft,
-              // tileMode: TileMode.clamp,
+              color: Colors.blue,              
             )),
           ),
         ),
@@ -131,10 +125,9 @@ class _Controller {
         title: 'Error',
         content: e.message ?? e.toString(),
       );
-
     }
-
   }
+  
   String validatorEmail(String value){
     if (value.contains('@') && value.contains('.')) return null;
     else return 'Invalid email';

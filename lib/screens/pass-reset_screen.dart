@@ -8,7 +8,6 @@ class ForgotPasswordScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _ForgotPasswordState();
   }
-
 }
 
 class _ForgotPasswordState extends State<ForgotPasswordScreen> {
@@ -19,8 +18,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
   void initState() {
     super.initState();
     con = _Controller(this);
-  }
-  
+  }  
   
   @override
   Widget build(BuildContext context) {
@@ -43,12 +41,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
             clipper: _AppBarClipper(),
             child: Container(
                 decoration: BoxDecoration(
-              color: Colors.blue,
-              //   gradient: LinearGradient(
-              // colors: [Color(0xFF696D77), Color(0xFF292C36)],
-              // begin: Alignment.bottomRight,
-              // end: Alignment.topLeft,
-              // tileMode: TileMode.clamp,
+              color: Colors.blue,              
             )),
           ),
         ),
@@ -90,7 +83,6 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
       )
     );
   }
-
 }
 
 class _Controller {
@@ -99,15 +91,13 @@ class _Controller {
   String email;
   String password;
 
-  void sendLink() async {
-    
+  void sendLink() async {    
     try {
       if (_state.formKey.currentState.validate()) {
         FirebaseAuth.instance.sendPasswordResetEmail(email: email);
         MyDialog.info(context:_state.context,title:'Reset Email Sent',content: 'Please check your email',
       );
-    }
-      
+    }      
     } catch (e) {
       MyDialog.info(
         context: _state.context,

@@ -11,7 +11,6 @@ import 'package:translator/translator.dart';
 
 class AddScreen extends StatefulWidget {
   static const routeName = '/home/addfromImageScreen';
-
   @override
   State<StatefulWidget> createState() {
     return _AddState();
@@ -64,7 +63,7 @@ class _AddState extends State<AddScreen> {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
     user ??= args['user'];
-    translations ??= args['photoMemoList'];
+   // translations ??= args['translationList'];
 
     return Scaffold(
         appBar: PreferredSize(
@@ -107,16 +106,16 @@ class _AddState extends State<AddScreen> {
                       height: 100,
                       width: MediaQuery.of(context).size.width / 4,
                       child: image == null
-                          ? Icon(Icons.photo_library, size: 100.0)
+                          ? Icon(Icons.photo_library, size: 90.0)
                           : Image.file(image, fit: BoxFit.fill),
                     ),
                     Positioned(
                       right: 0.0,
                       bottom: 0.0,
                       child: Container(
-                        width: 25,
-                        height: 25,
-                        color: Colors.blue[200],
+                        width: 30,
+                        height: 30,
+                        color: Colors.blue[900],
                         child: PopupMenuButton<String>(
                           onSelected: con.getPicture,
                           itemBuilder: (context) => <PopupMenuEntry<String>>[
@@ -153,25 +152,25 @@ class _AddState extends State<AddScreen> {
                 RaisedButton(
                   child: Text(
                     'Read Text',
-                    style: TextStyle(fontSize: 15.0, color: Colors.white),
+                    style: TextStyle(fontSize: 12.0, color: Colors.white),
                   ),
                   color: Colors.blue,
                   onPressed: con.readText,
                 ),
                 _translateto == null
                     ? Text(
-                        _transtitle + 'N/A',
+                        _transtitle + _currentItemSelected,
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                            fontSize: 30),
                       )
                     : Text(
                         _transtitle + _translateto,
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                            fontSize: 30),
                       ),
                 // TextFormField(
                 //   decoration: InputDecoration(
@@ -205,11 +204,22 @@ class _AddState extends State<AddScreen> {
                     //  onSaved: con.onSavedText,
                   ),
                 ),
-                IconButton(
-                  iconSize: 35,
-                  color: Colors.black,
-                  icon: Icon(Icons.speaker_phone),
-                  onPressed: () => con.speak(lang.text),
+                Row(
+                  children: [
+                    IconButton(
+                      iconSize: 35,
+                      color: Colors.black,
+                      icon: Icon(Icons.mic),
+                      onPressed: () {},
+                    ),
+                    SizedBox(width: 300,),
+                    IconButton(
+                      iconSize: 35,
+                      color: Colors.black,
+                      icon: Icon(Icons.speaker_phone),
+                      onPressed: () => con.speak(lang.text),
+                    ),
+                  ],
                 ),
                 // RaisedButton(
                 //   child: Text(
@@ -259,7 +269,7 @@ class _AddState extends State<AddScreen> {
                 RaisedButton(
                   child: Text(
                     'Translate',
-                    style: TextStyle(fontSize: 15.0, color: Colors.white),
+                    style: TextStyle(fontSize: 13.0, color: Colors.white),
                   ),
                   color: Colors.blue,
                   onPressed: con.translate,
@@ -376,22 +386,22 @@ class _Controller {
       Map<String, String> photoInfo = await FirebaseController.uploadStorage(
           image: _state.image,
           uid: _state.user.uid,
-          sharedWith: sharedWith,
+        //  sharedWith: sharedWith,
           listener: (double progressPercentage) {
             _state.render(() => uploadProgressMessage =
                 'Uploading: ${progressPercentage.toStringAsFixed(1)} %');
           });
 
-     // 3. save photomemo doc to Firestore
+     // 3. save translation doc to Firestore
       var p = MyTranslation(
-        title: title,
+        title: _state._transtitle,
         orgtext: text,
+        transtext: _state.out,
         photoPath: photoInfo['path'],
         photoURL: photoInfo['url'],
         createdBy: _state.user.email,
-        sharedWith: sharedWith,
-        updatedAt: DateTime.now(),
-        // imageLabels: labels,
+      //  sharedWith: sharedWith,
+        updatedAt: DateTime.now(),        
       );
 
       p.docId = await FirebaseController.addTranslation(p);
@@ -425,47 +435,47 @@ class _Controller {
     } catch (e) {}
   }
 
-  String validatorTitle(String value) {
-    if (value == null || value.trim().length < 2) {
-      return 'min 2 chars';
-    } else {
-      return null;
-    }
-  }
+  // String validatorTitle(String value) {
+  //   if (value == null || value.trim().length < 2) {
+  //     return 'min 2 chars';
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
-  void onSavedTitle(String value) {
-    this.title = value;
-  }
+  // void onSavedTitle(String value) {
+  //   this.title = value;
+  // }
 
-  String validatorText(String value) {
-    if (value == null || value.trim().length < 3) {
-      return 'min 3 chars';
-    } else {
-      return null;
-    }
-  }
+  // String validatorText(String value) {
+  //   if (value == null || value.trim().length < 3) {
+  //     return 'min 3 chars';
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
-  void onSavedText(String value) {
-    this.text = value;
-  }
+  // void onSavedText(String value) {
+  //   this.text = value;
+  // }
 
-  String validatorSharedWith(String value) {
-    if (value == null || value.trim().length == 0) return null;
-    List<String> emailList = value.split(',').map((e) => e.trim()).toList();
-    for (String email in emailList) {
-      if (email.contains('@') && email.contains('.'))
-        continue;
-      else
-        return 'Comma(,) separated email list';
-    }
-    return null;
-  }
+  // String validatorSharedWith(String value) {
+  //   if (value == null || value.trim().length == 0) return null;
+  //   List<String> emailList = value.split(',').map((e) => e.trim()).toList();
+  //   for (String email in emailList) {
+  //     if (email.contains('@') && email.contains('.'))
+  //       continue;
+  //     else
+  //       return 'Comma(,) separated email list';
+  //   }
+  //   return null;
+  // }
 
-  void onSavedSharedWith(String value) {
-    if (value.trim().length != 0) {
-      this.sharedWith = value.split(',').map((e) => e.trim()).toList();
-    }
-  }
+  // void onSavedSharedWith(String value) {
+  //   if (value.trim().length != 0) {
+  //     this.sharedWith = value.split(',').map((e) => e.trim()).toList();
+  //   }
+  // }
 }
 
 class _AppBarClipper extends CustomClipper<Path> {

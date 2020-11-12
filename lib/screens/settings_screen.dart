@@ -71,8 +71,7 @@ class _SettingState extends State<SettingScreen> {
           key: formKey,
           child: SingleChildScrollView(
             child: Column(
-              children: <Widget>[
-                Text('Change Profile Picture', style: TextStyle(fontSize: 20.0),),
+              children: <Widget>[                
                 Stack(
                   children: <Widget>[
                     Container(
@@ -90,7 +89,7 @@ class _SettingState extends State<SettingScreen> {
                       child: Container(
                         height: 30,
                         width: 30,
-                        color: Colors.black,
+                        color: Colors.blue,
                         child: PopupMenuButton<String>(
                           onSelected: con.getPicture,
                           itemBuilder: (context) => <PopupMenuEntry<String>>[
@@ -117,6 +116,7 @@ class _SettingState extends State<SettingScreen> {
                     ),
                   ],
                 ),
+                Text('Profile Picture', style: TextStyle(fontSize: 20.0),),
                 con.progressMessage == null
                     ? SizedBox(height: 1.0)
                     : Text(
@@ -134,6 +134,17 @@ class _SettingState extends State<SettingScreen> {
                     onSaved: con.onSavedDisplayName,
                   ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: TextFormField(
+                //     style: TextStyle(fontSize: 20.0),
+                //     decoration: InputDecoration(hintText: 'Nationality'),
+                //     initialValue: user.nationality ?? 'N/A',
+                //     autocorrect: false,
+                //     validator: con.validatorDisplayName,
+                //     onSaved: con.onSavedDisplayName,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -146,6 +157,7 @@ class _Controller {
   String progressMessage;
   File imageFile;
   String displayName;
+  String nationality;
 
   _Controller(this._state);
 

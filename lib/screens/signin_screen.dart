@@ -1,8 +1,8 @@
+//import 'package:myGuide/main.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
-//import 'package:myGuide/main.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/home_screen.dart';
 import 'package:myGuide/screens/signup_screen.dart';
@@ -11,7 +11,6 @@ import 'package:myGuide/screens/view/mydialog.dart';
 
 class SignInScreen extends StatefulWidget {
   static const routeName = '/signInScreen';
-
   @override
   State<StatefulWidget> createState() {
     return _SignInState();
@@ -31,10 +30,7 @@ class _SignInState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Sign In'),
-      // ),
+    return Scaffold(      
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
         child: SingleChildScrollView(
@@ -60,8 +56,7 @@ class _SignInState extends State<SignInScreen> {
                         style: TextStyle(
                           color: Colors.blue[600],
                           fontSize: 25.0,
-                          fontFamily: 'Audiowide',
-                          
+                          fontFamily: 'Audiowide',                          
                         ),
                       ),
                     ),
@@ -109,17 +104,11 @@ class _SignInState extends State<SignInScreen> {
                 ),
                 FlatButton(
                   onPressed: con.forgotPassword,
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(fontSize: 15.0),
-                  ),
+                  child: Text('Forgot Password?',style: TextStyle(fontSize: 15.0),),
                 ),
                 FlatButton(
                   onPressed: con.signUp,
-                  child: Text(
-                    'No account? Click here to create?',
-                    style: TextStyle(fontSize: 15.0),
-                  ),
+                  child: Text('No account? Click here to create?',style: TextStyle(fontSize: 15.0),),
                 ),
               ],
             ),
@@ -156,7 +145,7 @@ class _Controller {
     FirebaseUser user;
     try {
       user = await FirebaseController.signIn(email, password);
-      print('USER: $user');
+     // print('USER: $user');
     } catch (e) {
       MyDialog.circularProgressEnd(_state.context);
       MyDialog.info(
@@ -171,7 +160,7 @@ class _Controller {
     // 1.  read all translations from firebase
     try {
       List<MyTranslation> translations =
-          await FirebaseController.getPhotoMemos(user.email);
+          await FirebaseController.getTranslations(user.email);
       MyDialog.circularProgressEnd(_state.context);
       // 2.  navigate to Home screen to display photomemo
       Navigator.pushReplacementNamed(_state.context, HomeScreen.routeName,
@@ -182,7 +171,7 @@ class _Controller {
         context: _state.context,
         title: 'Firebase/Firestore error',
         content:
-            'Cannot get photo memo document. Try again later! \n ${e.message}',
+            'Cannot get translations. Try again later! \n ${e.message}',
       );
     }
   }

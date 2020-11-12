@@ -22,7 +22,7 @@ class myGuide extends StatelessWidget {
        scaffoldBackgroundColor: Colors.white,
        primaryColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.white
+          color: Colors.black
         ),
       ),
       initialRoute: SignInScreen.routeName,

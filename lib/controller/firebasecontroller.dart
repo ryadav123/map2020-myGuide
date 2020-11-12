@@ -20,7 +20,7 @@ class FirebaseController {
     await FirebaseAuth.instance.signOut();
   }
 
-  static Future<List<MyTranslation>> getPhotoMemos(String email) async {
+  static Future<List<MyTranslation>> getTranslations(String email) async {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
@@ -71,7 +71,7 @@ class FirebaseController {
     @required File image,
     String filePath,
     @required String uid,
-    @required List<dynamic> sharedWith,
+  //  @required List<dynamic> sharedWith,
     @required Function listener,
   }) async {
     filePath ??= '${MyTranslation.IMAGE_FOLDER}/$uid/${DateTime.now()}';
