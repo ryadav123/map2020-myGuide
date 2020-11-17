@@ -44,12 +44,13 @@ class _SignInState extends State<SignInScreen> {
                       height: 0.0,
                     ),
                     Image.asset(
-                      'assets/images/translation.jpg',
+                     // 'assets/images/translation.jpg',
+                      'assets/images/translation1.png',
                       width: 210,
                       height: 210,
                     ),
                     Positioned(
-                      top: 185.0,
+                      top: 180.0,
                       left: 50.0,
                       child: Text(
                         'myGuide',

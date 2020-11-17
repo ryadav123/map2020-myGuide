@@ -75,6 +75,7 @@ class _HomeState extends State<HomeScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+          backgroundColor: Colors.white,
           actions: [
             IconButton(
               onPressed: con.settings,
@@ -308,7 +309,7 @@ class _Controller {
     try {
       await Navigator.pushNamed(_state.context, AddScreen.routeName,
           arguments: {
-            'user': _state.user,
+            'user': _state.user, 'translationList': _state.translations
           });
    //   Navigator.pop(_state.context); // close the drawer
     } catch (e) {}

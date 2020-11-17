@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myGuide/screens/signin_screen.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,6 +27,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+            backgroundColor: Colors.white,
             title: Center(
             child: Text(
               'Password Reset',
@@ -95,7 +97,8 @@ class _Controller {
     try {
       if (_state.formKey.currentState.validate()) {
         FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-        MyDialog.info(context:_state.context,title:'Reset Email Sent',content: 'Please check your email',
+        Navigator.pushReplacementNamed(_state.context, SignInScreen.routeName);
+        MyDialog.info(context:_state.context,title:'Password Reset Email Sent',content: 'Please check your email to reset password.',
       );
     }      
     } catch (e) {
@@ -104,10 +107,7 @@ class _Controller {
         title: 'Error',
         content: e.message ?? e.toString(),
       );
-    } 
-    
-    //sleep(Duration(seconds:5));
-   // Navigator.pushNamed(_state.context, SignInScreen.routeName);   
+    }       
   }
 
   String validatorEmail(String value){

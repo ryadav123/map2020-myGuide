@@ -35,6 +35,7 @@ class _SettingState extends State<SettingScreen> {
         appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+          backgroundColor: Colors.white,
           actions: [
             IconButton(
               onPressed: con.save,

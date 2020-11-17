@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
+import 'package:myGuide/screens/signin_screen.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 
 class SignUpScreen extends StatefulWidget {  
@@ -27,6 +28,7 @@ class _SignUpState extends State<SignUpScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+            backgroundColor: Colors.white,
             title: Center(
             child: Text(
               'Sign Up',
@@ -114,11 +116,12 @@ class _Controller {
 
     try {
       await FirebaseController.signUp(email, password);
+      Navigator.pushReplacementNamed(_state.context, SignInScreen.routeName);
       MyDialog.info(
         context:_state.context,
-        title:'Successfully created',
-        content: 'Your account is created! Go to Sign In',
-      );
+        title:'Account Created',
+        content: 'You can log in now!!',
+      );  
     } catch (e) {
       MyDialog.info(
         context: _state.context,

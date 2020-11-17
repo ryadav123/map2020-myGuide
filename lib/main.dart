@@ -19,8 +19,11 @@ class myGuide extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-       scaffoldBackgroundColor: Colors.white,
-       primaryColor: Colors.white,
+        bottomAppBarColor: Colors.black,
+      // scaffoldBackgroundColor: Colors.white,
+      // backgroundColor: Colors.black,
+      // primaryColor: Colors.white,
+     //  primarySwatch: Colors.red,
         iconTheme: IconThemeData(
           color: Colors.black
         ),

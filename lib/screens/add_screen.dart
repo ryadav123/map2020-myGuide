@@ -45,9 +45,10 @@ class _AddState extends State<AddScreen> {
   ];
   var _currentItemSelected = 'Afrikaans';
   GoogleTranslator translator = GoogleTranslator();
-  final lang = TextEditingController();
+//  final lang = TextEditingController(text: sentence);
   final flutterTts = FlutterTts();
   var out;
+  String _translationTitle;
   String _transtitle = 'English-';
   String _translateto;
 
@@ -63,12 +64,14 @@ class _AddState extends State<AddScreen> {
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
     user ??= args['user'];
-   // translations ??= args['translationList'];
+    translations ??= args['translationList'];
 
     return Scaffold(
         appBar: PreferredSize(
+          
           preferredSize: Size.fromHeight(100),
           child: AppBar(
+            backgroundColor: Colors.white,
             actions: [
               IconButton(
                 onPressed: con.save,
@@ -100,6 +103,10 @@ class _AddState extends State<AddScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                Text(
+                      'Select a text image to read from ?',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                 Stack(
                   children: <Widget>[
                     Container(
@@ -110,12 +117,12 @@ class _AddState extends State<AddScreen> {
                           : Image.file(image, fit: BoxFit.fill),
                     ),
                     Positioned(
-                      right: 0.0,
-                      bottom: 0.0,
+                      right: 10,
+                      bottom: 10,
                       child: Container(
-                        width: 30,
-                        height: 30,
-                        color: Colors.blue[900],
+                        width: 28,
+                        height: 28,
+                        color: Colors.blue,
                         child: PopupMenuButton<String>(
                           onSelected: con.getPicture,
                           itemBuilder: (context) => <PopupMenuEntry<String>>[
@@ -149,105 +156,86 @@ class _AddState extends State<AddScreen> {
                       )
                     : Text(con.uploadProgressMessage,
                         style: TextStyle(fontSize: 20.0)),
-                RaisedButton(
-                  child: Text(
-                    'Read Text',
-                    style: TextStyle(fontSize: 12.0, color: Colors.white),
+                Container(
+                  height: 20,
+                  width: 90,
+                  child: RaisedButton(                  
+                    child: Text(
+                      'Read Text',
+                      style: TextStyle(fontSize: 12.0, color: Colors.white),
+                    ),
+                    color: Colors.blue,
+                    onPressed: con.readText,
                   ),
-                  color: Colors.blue,
-                  onPressed: con.readText,
                 ),
                 _translateto == null
                     ? Text(
                         _transtitle + _currentItemSelected,
                         style: TextStyle(
+                            color: Colors.red,
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
                             fontSize: 30),
                       )
+                      
                     : Text(
                         _transtitle + _translateto,
                         style: TextStyle(
+                          color: Colors.red,
                             fontStyle: FontStyle.italic,
                             fontWeight: FontWeight.bold,
                             fontSize: 30),
                       ),
-                // TextFormField(
-                //   decoration: InputDecoration(
-                //   hintText: 'Title',
-                //   ),
-                //   autocorrect: true,
-                //   validator: con.validatorTitle,
-                //   onSaved: con.onSavedTitle,
-                // ),
-                Row(
-                  children: [
-                    Text(
-                      'Type, Read or Speak your text here',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                SizedBox(height: 3,),              
+                Text(
+                  'Type, Read or Speak your text here',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: lang,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      //  labelText: 'Text',
-                      hintText: 'Text',
-                    ),
-                    // initialValue: _initialText == null ? 'nullba': 'Rohan',
+                Container(              
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: TextField(                
+                    controller: con.lang,
+                    maxLines: null,                    
+                    decoration: InputDecoration(    
+                      labelText: 'Text',                                       
+                      border: OutlineInputBorder(                        
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(20)                          
+                        ),                        
+                      ),  
+                    ),                    
                     autocorrect: true,
-                    keyboardType: TextInputType.multiline,
-                    //  validator: con.validatorText,
-                    //  onSaved: con.onSavedText,
+                    keyboardType: TextInputType.multiline,                    
                   ),
                 ),
                 Row(
                   children: [
+                    SizedBox(width: MediaQuery.of(context).size.width / 3,),
                     IconButton(
                       iconSize: 35,
                       color: Colors.black,
                       icon: Icon(Icons.mic),
                       onPressed: () {},
                     ),
-                    SizedBox(width: 300,),
+                   // SizedBox(width: 200,),
                     IconButton(
                       iconSize: 35,
                       color: Colors.black,
                       icon: Icon(Icons.speaker_phone),
-                      onPressed: () => con.speak(lang.text),
+                      onPressed: () => con.speak(con.lang.text),
                     ),
                   ],
                 ),
-                // RaisedButton(
-                //   child: Text(
-                //     'Spaek',
-                //     style: TextStyle(fontSize: 15.0, color: Colors.white),
-                //   ),
-                //   color: Colors.blue,
-                //   onPressed: () => con.speak(lang.text),
-                // ),
-                // TextFormField(
-                //  // controller: temp_text,
-                //   decoration: InputDecoration(
-                //     hintText: 'Text',
-                //   ),
-                //   initialValue: _initialText == null ? 'nullba': 'Rohan',
-                //   autocorrect: true,
-                //   keyboardType: TextInputType.multiline,
-                //   validator: con.validatorText,
-                //   onSaved: con.onSavedText,
-                // ),
+                
                 Row(
                   children: [
+                    SizedBox(width: MediaQuery.of(context).size.width / 3.5,),
                     Text(
                       'Convert to:',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      width: 100,
+                      width: 10,
                     ),
                     DropdownButton<String>(
                       items: _languages.map((String dropDownStringItem) {
@@ -260,44 +248,43 @@ class _AddState extends State<AddScreen> {
                         setState(() {
                           _currentItemSelected = newValueSelected;
                           _translateto = newValueSelected;
+                          _translationTitle = _transtitle + _currentItemSelected;
                         });
                       },
                       value: _currentItemSelected,
                     ),
                   ],
                 ),
-                RaisedButton(
-                  child: Text(
-                    'Translate',
-                    style: TextStyle(fontSize: 13.0, color: Colors.white),
-                  ),
-                  color: Colors.blue,
-                  onPressed: con.translate,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Translation:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                Container(
+                  height: 20,
+                  width: 87,
+                  child: RaisedButton(
+                    child: Text(
+                      'Translate',
+                      style: TextStyle(fontSize: 13.0, color: Colors.white),
                     ),
-                  ],
+                    color: Colors.blue,
+                    onPressed: con.translate,
+                  ),
                 ),
-                Text(out.toString()),
+                SizedBox(height: 3,),
+                Text(
+                  'Translation:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                  child: Text(out.toString(),style: TextStyle(
+                    fontSize: 15,fontWeight: FontWeight.bold,color: Colors.green
+                  ),)),
+               SizedBox(height: 3,),
                IconButton(
                   iconSize: 35,
                   color: Colors.black,
                   icon: Icon(Icons.speaker_phone),
                   onPressed: () => con.speak(out.text),
                 ),
-                // TextFormField(
-                //   decoration: InputDecoration(
-                //     hintText: 'Translation',
-                //   ),
-                //   autocorrect: true,
-                //   keyboardType: TextInputType.multiline,
-                //   validator: con.validatorSharedWith,
-                //   onSaved: con.onSavedSharedWith,
-                // ),
+                
               ],
             ),
           ),
@@ -312,15 +299,23 @@ class _Controller {
   String title;
   String text;
   var temtext;
+  var lang = TextEditingController();
 
   List<String> sharedWith = [];
   String uploadProgressMessage;
 
-  Future<void> speak(String value) async {
-   // print(_state.lang.text);
+  Future<void> speak(String value) async {  
+    try { 
     await _state.flutterTts.setVolume(1000);
     await _state.flutterTts.setPitch(1.0);
     await _state.flutterTts.speak(value);
+    } catch(e) {
+      MyDialog.info(
+        context: _state.context,
+        title: 'Speak Error',
+        content: e.message ?? e.toString(),
+      );
+    }
   }
 
   void translate() {
@@ -338,9 +333,10 @@ class _Controller {
         transcode = null;
       }
       _state.translator
-          .translate(_state.lang.text, to: transcode)
+          //.translate(_state.lang.text, to: transcode)
+          .translate(lang.text, to: transcode)
           .then((output) {
-        _state.render(() {
+        _state.render(() {          
           _state.out = output;
         });
       });
@@ -354,6 +350,7 @@ class _Controller {
   }
 
   Future<void> readText() async {
+    try {
     sentence = '';
     FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(_state.image);
     TextRecognizer recognizedText = FirebaseVision.instance.textRecognizer();
@@ -367,18 +364,27 @@ class _Controller {
         }
       }
     }
-    print(sentence);
+   // print(sentence);
     _state.render(() {
       _state._initialText = sentence;
+      lang = TextEditingController(text: sentence);
     });
-    print(_state._initialText);
+   // print(_state._initialText);
+    } catch (e) {
+      MyDialog.info(
+        context: _state.context,
+        title: ' Image Error',
+        content: e.message ?? e.toString(),
+      );
+
+    }
   }
 
   void save() async {
-    if (!_state.formKey.currentState.validate()) {
-      return;
-    }
-    _state.formKey.currentState.save();
+    // if (!_state.formKey.currentState.validate()) {
+    //   return;
+    // }
+    // _state.formKey.currentState.save();
 
     try {
       MyDialog.circularProgressStart(_state.context);
@@ -391,28 +397,31 @@ class _Controller {
             _state.render(() => uploadProgressMessage =
                 'Uploading: ${progressPercentage.toStringAsFixed(1)} %');
           });
-
+     // print('Up here');
      // 3. save translation doc to Firestore
+     print(_state._translationTitle);         
       var p = MyTranslation(
-        title: _state._transtitle,
-        orgtext: text,
-        transtext: _state.out,
+         title: _state._translationTitle,         
+        //title: 'English-Nepali',
+         orgtext: lang.text,        
+       // orgtext: "Hello",
+         transtext: _state.out.toString(),
+       // transtext: "Hallo",
         photoPath: photoInfo['path'],
         photoURL: photoInfo['url'],
         createdBy: _state.user.email,
       //  sharedWith: sharedWith,
         updatedAt: DateTime.now(),        
       );
-
+    //  print('In between');
       p.docId = await FirebaseController.addTranslation(p);
+      print('Before insert');
       _state.translations.insert(0, p);
-
+    //  print("down here");
       MyDialog.circularProgressEnd(_state.context);
-
       Navigator.pop(_state.context);
     } catch (e) {
       MyDialog.circularProgressEnd(_state.context);
-
       MyDialog.info(
         context: _state.context,
         title: 'Firebase Error',
