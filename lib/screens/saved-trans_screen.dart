@@ -99,6 +99,7 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: con.addButton,

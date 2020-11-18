@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:translator/translator.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class AddScreen extends StatefulWidget {
   static const routeName = '/home/addfromImageScreen';
@@ -53,6 +55,8 @@ class _AddState extends State<AddScreen> {
   String _translationTitle;
   String _transtitle = 'English-';
   String _translateto;
+  stt.SpeechToText _speech;
+  bool _isListening = false;
 
   @override
   void initState() {
@@ -212,11 +216,19 @@ class _AddState extends State<AddScreen> {
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width / 3,),
-                    IconButton(
-                      iconSize: 35,
-                      color: Colors.black,
-                      icon: Icon(Icons.mic),
-                      onPressed: () {},
+                    AvatarGlow(
+                        animate: _isListening,
+                        glowColor: Colors.red,
+                        endRadius: 25,
+                        duration: const Duration(microseconds: 2000),
+                        repeatPauseDuration: const Duration(microseconds: 1000),
+                        repeat: true,
+                        child: IconButton(
+                        iconSize: 35,
+                        color: Colors.black,
+                        icon: Icon(_isListening ? Icons.mic:Icons.mic_none),
+                        onPressed: con.listen,
+                      ),
                     ),                  
                     IconButton(
                       iconSize: 35,
@@ -315,6 +327,34 @@ class _Controller {
         title: 'Speak Error',
         content: e.message ?? e.toString(),
       );
+    }
+  }
+
+  void listen() async {
+    _state._speech = stt.SpeechToText();
+    print('trying to go in here');
+    if(!_state._isListening) {
+      print('inside listening if');
+      bool available = await _state._speech.initialize(
+        onStatus: (val) => print('onStatus: $val'),
+        onError: (val) => print('onError: $val'),
+      );
+      if (available) {
+        print('available');
+        _state.render(() => _state._isListening = true );         
+        _state._speech.listen(
+              onResult: (val) => _state.render(() {
+              lang.text = val.recognizedWords;
+            }),
+          );
+      }
+      
+       else {
+         print('unavailable');
+        _state.render(() => _state._isListening = false);
+        _state._speech.stop();       
+      }
+      _state._isListening = false;
     }
   }
 
