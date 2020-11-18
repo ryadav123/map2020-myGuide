@@ -30,8 +30,7 @@ class _SettingState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     user ??= ModalRoute.of(context).settings.arguments;
-    return Scaffold(
-        
+    return Scaffold(        
         appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
@@ -58,11 +57,6 @@ class _SettingState extends State<SettingScreen> {
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.blue,
-                //   gradient: LinearGradient(
-                // colors: [Color(0xFF696D77), Color(0xFF292C36)],
-                // begin: Alignment.bottomRight,
-                // end: Alignment.topLeft,
-                // tileMode: TileMode.clamp,
               )
               ),
             ),
@@ -77,8 +71,7 @@ class _SettingState extends State<SettingScreen> {
                   children: <Widget>[
                     Container(
                       height: 200,
-                      width: 200,
-                      //width: MediaQuery.of(context).size.width,
+                      width: 200,                      
                       child: con.imageFile == null
                           ? MyImageView.network(
                               imageUrl: user.photoUrl, context: context)
@@ -134,18 +127,7 @@ class _SettingState extends State<SettingScreen> {
                     validator: con.validatorDisplayName,
                     onSaved: con.onSavedDisplayName,
                   ),
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: TextFormField(
-                //     style: TextStyle(fontSize: 20.0),
-                //     decoration: InputDecoration(hintText: 'Nationality'),
-                //     initialValue: user.nationality ?? 'N/A',
-                //     autocorrect: false,
-                //     validator: con.validatorDisplayName,
-                //     onSaved: con.onSavedDisplayName,
-                //   ),
-                // ),
+                ),                
               ],
             ),
           ),
@@ -179,6 +161,11 @@ class _Controller {
         },
       );
       Navigator.pop(_state.context);
+      MyDialog.info(
+        context: _state.context,
+        title: 'Profile Update',
+        content: 'Your profile has been successfully updated.',
+      );
     } catch (e) {
       MyDialog.info(
         context: _state.context,

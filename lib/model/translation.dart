@@ -10,7 +10,7 @@ class MyTranslation {
   static const CREATED_BY = 'createdBy';
   static const PHOTO_URL = 'photoURL';
   static const PHOTO_PATH = 'photoPath';
-  static const UPDATED_AT = 'updatedAt';
+  static const CREATED_ON = 'createdOn';
   static const SHARED_WITH = 'sharedWith'; 
 
   String docId;  //Firestore doc id
@@ -20,7 +20,7 @@ class MyTranslation {
   String transtext;
   String photoPath; //Firebase Storage; image file name
   String photoURL;  // Firebase Storage; image URL for internet access
-  DateTime updatedAt; // created or revised time
+  DateTime createdOn; // created or revised time
   List<dynamic> sharedWith; // list of emails
   
   MyTranslation({
@@ -31,7 +31,7 @@ class MyTranslation {
     this.transtext,
     this.photoPath,
     this.photoURL,
-    this.updatedAt,
+    this.createdOn,
     this.sharedWith,
   
   }) {
@@ -48,7 +48,7 @@ class MyTranslation {
       TRANS_TEXT: transtext,
       PHOTO_PATH: photoPath,
       PHOTO_URL: photoURL,
-      UPDATED_AT: updatedAt,
+      CREATED_ON: createdOn,
       SHARED_WITH: sharedWith,    
     };
   }
@@ -64,8 +64,8 @@ class MyTranslation {
       photoPath: data[MyTranslation.PHOTO_PATH],
       photoURL: data[MyTranslation.PHOTO_URL],
       sharedWith: data[MyTranslation.SHARED_WITH],    
-      updatedAt: data[MyTranslation.UPDATED_AT] != null ?
-        DateTime.fromMillisecondsSinceEpoch(data[MyTranslation.UPDATED_AT].millisecondsSinceEpoch) : null,
+      createdOn: data[MyTranslation.CREATED_ON] != null ?
+        DateTime.fromMillisecondsSinceEpoch(data[MyTranslation.CREATED_ON].millisecondsSinceEpoch) : null,
     );
   }
 

@@ -2,11 +2,13 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:translator/translator.dart';
 
 class AddScreen extends StatefulWidget {
@@ -25,6 +27,7 @@ class _AddState extends State<AddScreen> {
   List<MyTranslation> translations;
   var _initialText;
   var _languages = [
+    'Select',
     'Afrikaans',
     'Albanian',
     'Amharic',
@@ -43,9 +46,8 @@ class _AddState extends State<AddScreen> {
     'Nepali',
     'Maithli',
   ];
-  var _currentItemSelected = 'Afrikaans';
+  var _currentItemSelected = 'Select';
   GoogleTranslator translator = GoogleTranslator();
-//  final lang = TextEditingController(text: sentence);
   final flutterTts = FlutterTts();
   var out;
   String _translationTitle;
@@ -59,7 +61,6 @@ class _AddState extends State<AddScreen> {
   }
 
   void render(fn) => setState(fn);
-
   @override
   Widget build(BuildContext context) {
     Map args = ModalRoute.of(context).settings.arguments;
@@ -170,7 +171,7 @@ class _AddState extends State<AddScreen> {
                 ),
                 _translateto == null
                     ? Text(
-                        _transtitle + _currentItemSelected,
+                        _transtitle + 'Not Selected',
                         style: TextStyle(
                             color: Colors.red,
                             fontStyle: FontStyle.italic,
@@ -216,8 +217,7 @@ class _AddState extends State<AddScreen> {
                       color: Colors.black,
                       icon: Icon(Icons.mic),
                       onPressed: () {},
-                    ),
-                   // SizedBox(width: 200,),
+                    ),                  
                     IconButton(
                       iconSize: 35,
                       color: Colors.black,
@@ -333,7 +333,6 @@ class _Controller {
         transcode = null;
       }
       _state.translator
-          //.translate(_state.lang.text, to: transcode)
           .translate(lang.text, to: transcode)
           .then((output) {
         _state.render(() {          
@@ -358,36 +357,69 @@ class _Controller {
 
     for (TextBlock block in readText.blocks) {
       for (TextLine line in block.lines) {
-        for (TextElement word in line.elements) {
-          // print(word.text);
+        for (TextElement word in line.elements) {         
           sentence = '$sentence ${word.text}';
         }
       }
     }
-   // print(sentence);
     _state.render(() {
       _state._initialText = sentence;
       lang = TextEditingController(text: sentence);
     });
-   // print(_state._initialText);
     } catch (e) {
       MyDialog.info(
         context: _state.context,
         title: ' Image Error',
         content: e.message ?? e.toString(),
       );
-
     }
   }
 
   void save() async {
-    // if (!_state.formKey.currentState.validate()) {
-    //   return;
-    // }
-    // _state.formKey.currentState.save();
+    if (lang.text == null){
+      MyDialog.info(
+        context: _state.context,
+        title: 'Firebase Error',
+        content: "Either original text is empty or no translation done",
+      );
+    }
 
     try {
+      if (_state.image == null) {
+      File nonimage = await getImageFileFromAssets('images/Nonimage.jpg');    
+      _state.image = nonimage;
       MyDialog.circularProgressStart(_state.context);
+      // 1. upload pic to Storage
+      Map<String, String> photoInfo = await FirebaseController.uploadStorage(
+          image: _state.image,
+          uid: _state.user.uid,
+        //  sharedWith: sharedWith,
+          listener: (double progressPercentage) {
+            _state.render(() => uploadProgressMessage =
+                'Uploading: ${progressPercentage.toStringAsFixed(1)} %');
+          });
+     
+     // 3. save translation doc to Firestore
+     print(_state._translationTitle);         
+      var p = MyTranslation(
+         title: _state._translationTitle, 
+         orgtext: lang.text, 
+         transtext: _state.out.toString(),
+        photoPath: photoInfo['path'],
+        photoURL: photoInfo['url'],
+        createdBy: _state.user.email,
+      //  sharedWith: sharedWith,
+        createdOn: DateTime.now(),        
+      );
+    //  print('In between');
+      p.docId = await FirebaseController.addTranslation(p);
+      print('Before insert');
+      _state.translations.insert(0, p);
+    //  print("down here");
+      MyDialog.circularProgressEnd(_state.context);
+      Navigator.pop(_state.context);
+      } else {
+        MyDialog.circularProgressStart(_state.context);
       // 1. upload pic to Storage
       Map<String, String> photoInfo = await FirebaseController.uploadStorage(
           image: _state.image,
@@ -411,7 +443,7 @@ class _Controller {
         photoURL: photoInfo['url'],
         createdBy: _state.user.email,
       //  sharedWith: sharedWith,
-        updatedAt: DateTime.now(),        
+        createdOn: DateTime.now(),        
       );
     //  print('In between');
       p.docId = await FirebaseController.addTranslation(p);
@@ -420,6 +452,7 @@ class _Controller {
     //  print("down here");
       MyDialog.circularProgressEnd(_state.context);
       Navigator.pop(_state.context);
+      }
     } catch (e) {
       MyDialog.circularProgressEnd(_state.context);
       MyDialog.info(
@@ -485,6 +518,14 @@ class _Controller {
   //     this.sharedWith = value.split(',').map((e) => e.trim()).toList();
   //   }
   // }
+}
+
+Future<File> getImageFileFromAssets(String path) async {
+  final byteData = await rootBundle.load('assets/$path');
+  final file = File('${(await getTemporaryDirectory()).path}/$path');
+  await file.create(recursive: true);
+  await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes,byteData.lengthInBytes));
+  return file;
 }
 
 class _AppBarClipper extends CustomClipper<Path> {

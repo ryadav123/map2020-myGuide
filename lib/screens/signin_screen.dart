@@ -1,5 +1,3 @@
-//import 'package:myGuide/main.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
@@ -43,8 +41,7 @@ class _SignInState extends State<SignInScreen> {
                     SizedBox(
                       height: 0.0,
                     ),
-                    Image.asset(
-                     // 'assets/images/translation.jpg',
+                    Image.asset(                     
                       'assets/images/translation1.png',
                       width: 210,
                       height: 210,
@@ -140,9 +137,7 @@ class _Controller {
     }
 
     _state.formKey.currentState.save();
-
     MyDialog.circularProgressStart(_state.context);
-
     FirebaseUser user;
     try {
       user = await FirebaseController.signIn(email, password);
@@ -163,7 +158,8 @@ class _Controller {
       List<MyTranslation> translations =
           await FirebaseController.getTranslations(user.email);
       MyDialog.circularProgressEnd(_state.context);
-      // 2.  navigate to Home screen to display photomemo
+      
+      // 2.  navigate to Home screen
       Navigator.pushReplacementNamed(_state.context, HomeScreen.routeName,
           arguments: {'user': user, 'translationList': translations});
     } catch (e) {

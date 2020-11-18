@@ -56,7 +56,7 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
             child: Column(
               children: <Widget>[
                 Center(
-                  child: Text('Please click the link to reset your password',
+                  child: Text('Click the button to reset your password',
                   style: TextStyle(fontSize: 20.0
                   ),
                   ),

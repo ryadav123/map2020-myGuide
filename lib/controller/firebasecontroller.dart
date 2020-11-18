@@ -24,7 +24,7 @@ class FirebaseController {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
-        .orderBy(MyTranslation.UPDATED_AT, descending: true)
+        .orderBy(MyTranslation.CREATED_ON, descending: true)
         .getDocuments();
 
     var result = <MyTranslation>[];
@@ -36,36 +36,36 @@ class FirebaseController {
     return result;
   }
 
-  // static Future<List<PhotoMemo>> getPhotoMemosascending(String email) async {
-  //   QuerySnapshot querySnapshot = await Firestore.instance
-  //       .collection(PhotoMemo.COLLECTION)
-  //       .where(PhotoMemo.CREATED_BY, isEqualTo: email)
-  //       .orderBy(PhotoMemo.TITLE, descending: false)
-  //       .getDocuments();
+  static Future<List<MyTranslation>> getPhotoMemosascending(String email) async {
+    QuerySnapshot querySnapshot = await Firestore.instance
+        .collection(MyTranslation.COLLECTION)
+        .where(MyTranslation.CREATED_BY, isEqualTo: email)
+        .orderBy(MyTranslation.TITLE, descending: false)
+        .getDocuments();
 
-  //   var result = <PhotoMemo>[];
-  //   if (querySnapshot != null && querySnapshot.documents.length != 0) {
-  //     for (var doc in querySnapshot.documents) {
-  //       result.add(PhotoMemo.deserialize(doc.data, doc.documentID));
-  //     }
-  //   }
-  //   return result;
-  // }
-  // static Future<List<PhotoMemo>> getPhotoMemosdescending(String email) async {
-  //   QuerySnapshot querySnapshot = await Firestore.instance
-  //       .collection(PhotoMemo.COLLECTION)
-  //       .where(PhotoMemo.CREATED_BY, isEqualTo: email)
-  //       .orderBy(PhotoMemo.TITLE, descending: true)
-  //       .getDocuments();
+    var result = <MyTranslation>[];
+    if (querySnapshot != null && querySnapshot.documents.length != 0) {
+      for (var doc in querySnapshot.documents) {
+        result.add(MyTranslation.deserialize(doc.data, doc.documentID));
+      }
+    }
+    return result;
+  }
+  static Future<List<MyTranslation>> getPhotoMemosdescending(String email) async {
+    QuerySnapshot querySnapshot = await Firestore.instance
+        .collection(MyTranslation.COLLECTION)
+        .where(MyTranslation.CREATED_BY, isEqualTo: email)
+        .orderBy(MyTranslation.TITLE, descending: true)
+        .getDocuments();
 
-  //   var result = <PhotoMemo>[];
-  //   if (querySnapshot != null && querySnapshot.documents.length != 0) {
-  //     for (var doc in querySnapshot.documents) {
-  //       result.add(PhotoMemo.deserialize(doc.data, doc.documentID));
-  //     }
-  //   }
-  //   return result;
-  // }
+    var result = <MyTranslation>[];
+    if (querySnapshot != null && querySnapshot.documents.length != 0) {
+      for (var doc in querySnapshot.documents) {
+        result.add(MyTranslation.deserialize(doc.data, doc.documentID));
+      }
+    }
+    return result;
+  }
 
   static Future<Map<String, String>> uploadStorage({
     @required File image,
@@ -91,7 +91,7 @@ class FirebaseController {
   }
 
   static Future<String> addTranslation(MyTranslation translation) async {
-    translation.updatedAt = DateTime.now();
+    translation.createdOn = DateTime.now();
     DocumentReference ref = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .add(translation.serialize());
@@ -130,7 +130,7 @@ class FirebaseController {
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
       //  .where(PhotoMemo.IMAGE_LABELS, arrayContains: imageLabel.toLowerCase())
-        .orderBy(MyTranslation.UPDATED_AT, descending: true)
+        .orderBy(MyTranslation.CREATED_ON, descending: true)
         .getDocuments();
 
     var result = <MyTranslation>[];

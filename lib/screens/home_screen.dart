@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/add_screen.dart';
+import 'package:myGuide/screens/saved-trans_screen.dart';
 //import 'package:photomemo/screens/detailed_screen.dart';
 import 'package:myGuide/screens/settings_screen.dart';
 //import 'package:photomemo/screens/sharedwith_screen.dart';
@@ -125,153 +126,164 @@ class _HomeState extends State<HomeScreen> {
             user.displayName,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          
+          SizedBox(height: 10,),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                mainAxisSpacing: 3,
-                crossAxisSpacing: 3,
-                crossAxisCount: 3,
-                primary: false,
-                children: [
-                  GestureDetector(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                      color: Colors.white,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          Image.asset('assets/images/new.jpeg',width: 80,height: 80,),
-                          Text(
-                            'New Translation',
-                            style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ),
-                    onTap: con.addTranslation,
-                  ),
-                  GestureDetector(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                      color: Colors.white,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          Image.asset('assets/images/search.jpeg',width: 70,height: 70,),
-                          Text(
-                            'Search Translation',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),                            
-                            textAlign: TextAlign.center,
+            child: Container(
+              color: Colors.redAccent,
+              height: 100,
+              width: 280,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: GridView.count(
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                    crossAxisCount: 2,
+                    primary: false,
+                    children: [
+                      GestureDetector(
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                          color: Colors.white,
+                          elevation: 10,
+                          child: Column(
+                            children: [
+                              Image.asset('assets/images/new.jpeg',width: 80,height: 80,),
+                              Text(
+                                'New Translation',
+                                style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
                           ),
-                        ],
+                        ),
+                        onTap: con.addTranslation,
                       ),
-                    ),
-                    onTap: () {
-                      print("Hello");
-                    },
-                  ),
-                  GestureDetector(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                      color: Colors.white,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          Image.asset('assets/images/saved.jpeg',width: 80,height: 80,),
-                          Text(
-                            'Saved Translations',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
+                      // GestureDetector(
+                      //   child: Card(
+                      //     shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(20)),
+                      //     color: Colors.white,
+                      //     elevation: 10,
+                      //     child: Column(
+                      //       children: [
+                      //         Image.asset('assets/images/search.jpeg',width: 70,height: 70,),
+                      //         Text(
+                      //           'Search Translation',
+                      //           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),                            
+                      //           textAlign: TextAlign.center,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      //   onTap: () {
+                      //     print("Hello");
+                      //   },
+                      // ),
+                      GestureDetector(
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                          color: Colors.white,
+                          elevation: 10,
+                          child: Column(
+                            children: [
+                              Image.asset('assets/images/saved.jpeg',width: 80,height: 80,),
+                              Text(
+                                'Saved Translations',
+                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ),
+                        onTap: con.savedTranslation,
                       ),
-                    ),
-                    onTap: () {
-                      print("Hello");
-                    },
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
+          SizedBox(height: 10,),
           Text('Recent Translations', style: TextStyle(fontSize:25, fontWeight:FontWeight.bold),textAlign: TextAlign.left,),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                crossAxisCount: 3,
-                primary: false,
-                children: [
-                  GestureDetector(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                      color: Colors.blue,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          //  SvgPicture.network('C:\Users\badal\Downloads\google-translate.svg'),
-                          Text(
-                            'Translation 1',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
+            child: Container(
+              color: Colors.redAccent,
+              height: 100,
+              width: 280,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.count(
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 5,
+                  crossAxisCount: 3,
+                  primary: false,
+                  children: [
+                    GestureDetector(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                        color: Colors.blue,
+                        elevation: 10,
+                        child: Column(
+                          children: [
+                            //  SvgPicture.network('C:\Users\badal\Downloads\google-translate.svg'),
+                            Text(
+                              'Translation 1',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
                       ),
+                      onTap: con.addTranslation,
                     ),
-                    onTap: con.addTranslation,
-                  ),
-                  GestureDetector(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: Colors.blue,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          //  SvgPicture.network('C:\Users\badal\Downloads\google-translate.svg'),
-                          Text(
-                            'Translation 2',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
+                    GestureDetector(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        color: Colors.blue,
+                        elevation: 10,
+                        child: Column(
+                          children: [
+                            //  SvgPicture.network('C:\Users\badal\Downloads\google-translate.svg'),
+                            Text(
+                              'Translation 2',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
                       ),
+                      onTap: () {
+                        print("Hello");
+                      },
                     ),
-                    onTap: () {
-                      print("Hello");
-                    },
-                  ),
-                  GestureDetector(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: Colors.blue,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          //  SvgPicture.network('C:\Users\badal\Downloads\google-translate.svg'),
-                          Text(
-                            'Translation 3',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
+                    GestureDetector(
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        color: Colors.blue,
+                        elevation: 10,
+                        child: Column(
+                          children: [
+                            //  SvgPicture.network('C:\Users\badal\Downloads\google-translate.svg'),
+                            Text(
+                              'Translation 3',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
                       ),
+                      onTap: () {
+                        print("Hello");
+                      },
                     ),
-                    onTap: () {
-                      print("Hello");
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -303,6 +315,16 @@ class _Controller {
     _state.user = await FirebaseAuth.instance.currentUser();
     //  Navigator.pop(_state.context);
     _state.render(() {});
+  }
+
+  void savedTranslation() async {
+    try {
+      await Navigator.pushNamed(_state.context, SavedTranslationScreen.routeName,
+          arguments: {
+            'user': _state.user, 'translationList': _state.translations
+          });
+   //   Navigator.pop(_state.context); // close the drawer
+    } catch (e) {}
   }
 
   void addTranslation() async {
