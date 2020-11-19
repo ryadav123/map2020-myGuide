@@ -46,7 +46,6 @@ class _AddState extends State<AddScreen> {
     'English',
     'Hindi',
     'Nepali',
-    'Maithli',
   ];
   var _currentItemSelected = 'Select';
   GoogleTranslator translator = GoogleTranslator();
@@ -261,6 +260,7 @@ class _AddState extends State<AddScreen> {
                           _currentItemSelected = newValueSelected;
                           _translateto = newValueSelected;
                           _translationTitle = _transtitle + _currentItemSelected;
+                          out = null;
                         });
                       },
                       value: _currentItemSelected,
@@ -318,9 +318,19 @@ class _Controller {
 
   Future<void> speak(String value) async {  
     try { 
+      if (value== null) {
+        MyDialog.info(
+        context: _state.context,
+        title: 'Speak Error',
+        content: 'No translation yet',
+      );
+      
+      }
+      else {
     await _state.flutterTts.setVolume(1000);
     await _state.flutterTts.setPitch(1.0);
     await _state.flutterTts.speak(value);
+      }
     } catch(e) {
       MyDialog.info(
         context: _state.context,
@@ -332,15 +342,15 @@ class _Controller {
 
   void listen() async {
     _state._speech = stt.SpeechToText();
-    print('trying to go in here');
+    
     if(!_state._isListening) {
-      print('inside listening if');
+      
       bool available = await _state._speech.initialize(
         onStatus: (val) => print('onStatus: $val'),
         onError: (val) => print('onError: $val'),
       );
       if (available) {
-        print('available');
+        
         _state.render(() => _state._isListening = true );         
         _state._speech.listen(
               onResult: (val) => _state.render(() {
@@ -349,8 +359,7 @@ class _Controller {
           );
       }
       
-       else {
-         print('unavailable');
+       else {         
         _state.render(() => _state._isListening = false);
         _state._speech.stop();       
       }
@@ -363,7 +372,31 @@ class _Controller {
     try {
       if (_state._translateto == 'Afrikaans') {
         transcode = 'af';
-      } else if (_state._translateto == 'English') {
+      } else if (_state._translateto == 'Albanian') {
+        transcode = 'sq'; 
+      }  else if (_state._translateto == 'Amharic') {
+        transcode = 'am'; 
+      } else if (_state._translateto == 'Arabic') {
+        transcode = 'ar';
+      } else if (_state._translateto == 'Armenian') {
+        transcode = 'hy';
+      } else if (_state._translateto == 'Azerbaijani') {
+        transcode = 'az';
+      } else if (_state._translateto == 'Basque') {
+        transcode = 'eu'; 
+      } else if (_state._translateto == 'Belarusian') {
+        transcode = 'be';
+      } else if (_state._translateto == 'Bengali') {
+        transcode = 'bn';
+      } else if (_state._translateto == 'Bosnian') {
+        transcode = 'bs';     
+      } else if (_state._translateto == 'Bulgarian') {
+        transcode = 'bg'; 
+      } else if (_state._translateto == 'Catalan') {
+        transcode = 'ca';
+      } else if (_state._translateto == 'Cebuano') {
+        transcode = 'ceb';
+      }  else if (_state._translateto == 'English') {
         transcode = 'en';
       } else if (_state._translateto == 'Hindi') {
         transcode = 'hi';
@@ -372,6 +405,20 @@ class _Controller {
       } else {
         transcode = null;
       }
+      if (transcode==null) {
+        MyDialog.info(
+        context: _state.context,
+        title: 'Translation Error',
+        content: 'Language not selected'
+      );
+      } else {
+        if (lang.text=="") {
+        MyDialog.info(
+        context: _state.context,
+        title: 'Translation Error',
+        content: 'No text for translation'
+        );
+        }else {
       _state.translator
           .translate(lang.text, to: transcode)
           .then((output) {
@@ -379,6 +426,8 @@ class _Controller {
           _state.out = output;
         });
       });
+        }
+      }
     } catch (e) {
       MyDialog.info(
         context: _state.context,
@@ -416,12 +465,13 @@ class _Controller {
   }
 
   void save() async {
-    if (lang.text == null){
+    if (lang.text == '' || _state.out == null){
       MyDialog.info(
         context: _state.context,
-        title: 'Firebase Error',
+        title: 'Saving Error',
         content: "Either original text is empty or no translation done",
       );
+      return;
     }
 
     try {
@@ -471,13 +521,13 @@ class _Controller {
           });
      // print('Up here');
      // 3. save translation doc to Firestore
-     print(_state._translationTitle);         
+    // print(_state._translationTitle);         
       var p = MyTranslation(
-         title: _state._translationTitle,         
+        title: _state._translationTitle,         
         //title: 'English-Nepali',
-         orgtext: lang.text,        
+        orgtext: lang.text,        
        // orgtext: "Hello",
-         transtext: _state.out.toString(),
+        transtext: _state.out.toString(),
        // transtext: "Hallo",
         photoPath: photoInfo['path'],
         photoURL: photoInfo['url'],
@@ -487,7 +537,7 @@ class _Controller {
       );
     //  print('In between');
       p.docId = await FirebaseController.addTranslation(p);
-      print('Before insert');
+      
       _state.translations.insert(0, p);
     //  print("down here");
       MyDialog.circularProgressEnd(_state.context);

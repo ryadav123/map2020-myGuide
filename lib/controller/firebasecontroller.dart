@@ -36,7 +36,7 @@ class FirebaseController {
     return result;
   }
 
-  static Future<List<MyTranslation>> getPhotoMemosascending(String email) async {
+  static Future<List<MyTranslation>> getTranslationsascending(String email) async {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
@@ -51,7 +51,7 @@ class FirebaseController {
     }
     return result;
   }
-  static Future<List<MyTranslation>> getPhotoMemosdescending(String email) async {
+  static Future<List<MyTranslation>> getTranslationsdescending(String email) async {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
@@ -114,12 +114,12 @@ class FirebaseController {
   //   return labels;
   // }
 
-  static Future<void> deletePhotoMemo(MyTranslation photoMemo) async {
+  static Future<void> deleteTranslation(MyTranslation trans) async {
     await Firestore.instance
         .collection(MyTranslation.COLLECTION)
-        .document(photoMemo.docId)
+        .document(trans.docId)
         .delete();
-    await FirebaseStorage.instance.ref().child(photoMemo.photoPath).delete();
+    await FirebaseStorage.instance.ref().child(trans.photoPath).delete();
   }
 
   static Future<List<MyTranslation>> searchImages({

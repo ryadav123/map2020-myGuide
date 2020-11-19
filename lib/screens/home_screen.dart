@@ -48,26 +48,49 @@ class _HomeState extends State<HomeScreen> {
         child: Drawer(
           child: ListView(
             children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.translate),
-                title: Text('New',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-                onTap: con.addTranslation,
-              ),              
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-                onTap: con.settings,
+              Card(
+                color: Colors.greenAccent,
+                elevation: 5,
+                  child: ListTile(
+                  leading: Icon(Icons.translate),
+                  title: Text('New',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  onTap: con.addTranslation,
+                ),
+              ), 
+              Card(
+                color: Colors.greenAccent,
+                elevation: 5,
+                              child: ListTile(
+                  leading: Icon(Icons.save),
+                  title: Text('Saved',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  onTap: con.savedTranslation,
+                ),
+              ),             
+              Card(
+                color: Colors.greenAccent,
+                elevation: 5,
+                              child: ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  onTap: con.settings,
+                ),
               ),
-              ListTile(
-                leading: Icon(Icons.exit_to_app),
-                title: Text('Sign Out',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
-                onTap: con.signOut,
+              Card(
+                color: Colors.greenAccent,
+                elevation: 5,
+                              child: ListTile(
+                  leading: Icon(Icons.exit_to_app),
+                  title: Text('Sign Out',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w800, fontSize: 20)),
+                  onTap: con.signOut,
+                ),
               ),
             ],
           ),

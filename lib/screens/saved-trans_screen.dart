@@ -187,10 +187,10 @@ void addButton() async {
         
     var sortresults;
     if (_state.ascending) {
-      sortresults = await FirebaseController.getPhotoMemosascending(_state.user.email);
+      sortresults = await FirebaseController.getTranslationsascending(_state.user.email);
       _state.ascending = false;
     } else {
-      sortresults = await FirebaseController.getPhotoMemosdescending(_state.user.email);
+      sortresults = await FirebaseController.getTranslationsdescending(_state.user.email);
       _state.ascending = true;
     }
 
@@ -218,8 +218,8 @@ void addButton() async {
   }
   void delete() async {
     try {
-      MyTranslation photoMemo = _state.translations[delIndex];
-      await FirebaseController.deletePhotoMemo(photoMemo);
+      MyTranslation trans = _state.translations[delIndex];
+      await FirebaseController.deleteTranslation(trans);
       _state.render(() {
         _state.translations.removeAt(delIndex);
       });
