@@ -47,6 +47,7 @@ class _HomeState extends State<HomeScreen> {
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Drawer(
           child: ListView(
+            padding: EdgeInsets.fromLTRB(10, 90, 100, 100),
             children: <Widget>[
               Card(
                 color: Colors.greenAccent,
@@ -152,7 +153,7 @@ class _HomeState extends State<HomeScreen> {
           SizedBox(height: 10,),
           Expanded(
             child: Container(
-              color: Colors.redAccent,
+              color: Colors.white,
               height: 100,
               width: 280,
               child: Padding(
@@ -212,7 +213,9 @@ class _HomeState extends State<HomeScreen> {
                           elevation: 10,
                           child: Column(
                             children: [
-                              Image.asset('assets/images/saved.jpeg',width: 80,height: 80,),
+                              SizedBox(height: 13,),
+                              Image.asset('assets/images/saved.jpeg',width: 60,height: 60,),
+                              SizedBox(height: 8,),
                               Text(
                                 'Saved Translations',
                                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
@@ -233,7 +236,7 @@ class _HomeState extends State<HomeScreen> {
           Text('Recent Translations', style: TextStyle(fontSize:25, fontWeight:FontWeight.bold),textAlign: TextAlign.left,),
           Expanded(
             child: Container(
-              color: Colors.redAccent,
+              color: Colors.white,
               height: 100,
               width: 280,
               child: Padding(

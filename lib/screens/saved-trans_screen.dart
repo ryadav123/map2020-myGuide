@@ -116,8 +116,10 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
                       ? Colors.red[200]
                       : Colors.white,
                       padding: EdgeInsets.all(8),
-                  child: Card(                      
-                      color: Colors.yellowAccent,
+                  
+                  child: Card(      
+                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(50)),                               
+                      color: Colors.yellow[200],
                       elevation: 20,
                       child: ListTile(
                       leading: Container(
@@ -245,13 +247,24 @@ void addButton() async {
         results = await FirebaseController.searchInTitle(
         email: _state.user.email, searchLabel: searchKey);
         _state._titleSearch = false;
+        MyDialog.info(
+        context: _state.context,
+        title: 'Search',
+        content: 'Searched by Title',
+      );
       }else {
         results = await FirebaseController.searchInText(
         email: _state.user.email, searchLabel: searchKey);
         _state._titleSearch = true;
+        MyDialog.info(
+        context: _state.context,
+        title: 'Search',
+        content: 'Searched by Text',
+        );
       }
     }
     _state.render(() => _state.translations = results);
+    
   }
 
   String validatorEmail(String value){
