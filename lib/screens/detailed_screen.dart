@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:myGuide/screens/view/myimageview.dart';
-//import 'package:myGuide/screens/edit_screen.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:myGuide/screens/view/myimageview.dart';
 import 'package:share/share.dart';
@@ -27,6 +27,7 @@ class _DetailedState extends State<DetailedScreen> {
   _Controller con;
   FirebaseUser user;
   MyTranslation translation;
+  final flutterTts = FlutterTts();
 
   @override
   void initState() {
@@ -50,12 +51,7 @@ class _DetailedState extends State<DetailedScreen> {
              IconButton(
                icon: Icon(Icons.share),
                 onPressed: () => con.sharememo(context,translation),
-                ),
-             IconButton(
-               icon: Icon(Icons.edit),
-               // onPressed: con.edit,
-                onPressed: () {},
-                ),
+                ),             
            ],
           title: Center(
             child: Text(
@@ -92,8 +88,20 @@ class _DetailedState extends State<DetailedScreen> {
               Text(translation.title,style: TextStyle(fontSize: 20, color: Colors.red)),
               Text('Text', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
               Text('${translation.orgtext}', style: TextStyle(fontStyle: FontStyle.italic)),
+              IconButton(
+                      iconSize: 35,
+                      color: Colors.black,
+                      icon: Icon(Icons.speaker_phone),
+                      onPressed: () => con.speak(translation.orgtext),
+                    ),
               Text('\nTranslation', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
               Text('${translation.transtext}', style: TextStyle(fontStyle: FontStyle.italic)),
+              IconButton(
+                      iconSize: 35,
+                      color: Colors.black,
+                      icon: Icon(Icons.speaker_phone),
+                      onPressed: () => con.speak(translation.transtext),
+                    ),
               Text('\nCreated By: ${translation.createdBy}'),
               Text('Created On: ${translation.createdOn}')              
             ],
@@ -106,6 +114,30 @@ class _DetailedState extends State<DetailedScreen> {
 class _Controller {
   _DetailedState _state;
   _Controller(this._state);
+
+ Future<void> speak(String value) async {  
+    try { 
+      if (value== null) {
+        MyDialog.info(
+        context: _state.context,
+        title: 'Speak Error',
+        content: 'No translation yet',
+      );
+      
+      }
+      else {
+    await _state.flutterTts.setVolume(1000);
+    await _state.flutterTts.setPitch(1.0);
+    await _state.flutterTts.speak(value);
+      }
+    } catch(e) {
+      MyDialog.info(
+        context: _state.context,
+        title: 'Speak Error',
+        content: e.message ?? e.toString(),
+      );
+    }
+  }
 
 void sharememo(BuildContext context, MyTranslation translation ) async {
     try {
@@ -128,16 +160,7 @@ void sharememo(BuildContext context, MyTranslation translation ) async {
          content: e.message ?? e.toString(),
        );
      }
-
-  }
-
- 
-
-  // void edit() async {
-  //  await  Navigator.pushNamed(_state.context, EditScreen.routeName,
-  //   arguments: {'user': _state.user, 'photoMemo': _state.photoMemo});
-  // _state.render(() {});
-  // }
+  } 
 }
 
 class _AppBarClipper extends CustomClipper<Path> {

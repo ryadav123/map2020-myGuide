@@ -3,7 +3,6 @@ import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/add_screen.dart';
 import 'package:myGuide/screens/detailed_screen.dart';
-//import 'package:myGuide/screens/signin_screen.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myGuide/screens/view/myimageview.dart';
@@ -22,6 +21,7 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
   List<MyTranslation> translations;
   var formKey = GlobalKey<FormState>();
   bool ascending = true;
+  bool _titleSearch = true;
 
   @override
   void initState() {
@@ -53,14 +53,18 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
           //   ),
           // ),
           actions: [
+            IconButton(
+                    icon: Icon(Icons.sort_by_alpha),
+                    onPressed: con.sort,
+            ),
             Container(
               height: 50,
-              width: 150.0,
+              width: 200.0,
               child: Form(
                 key: formKey,
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: 'search by title/text',
+                    hintText: 'Search by title/text',
                     fillColor: Colors.white,
                     filled: true,
                   ),
@@ -79,15 +83,8 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
             IconButton(
                     icon: Icon(Icons.search),
                     onPressed: con.search,
-                  ),
-            IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: con.search,
-            ),
-            IconButton(
-                    icon: Icon(Icons.sort_by_alpha),
-                    onPressed: con.sort,
-            ),
+                  ),            
+            
             IconButton(icon: Icon(Icons.delete), onPressed: con.delete),
           ],
           elevation: 0,
@@ -227,7 +224,7 @@ void addButton() async {
     } catch (e) {
       MyDialog.info(
         context: _state.context,
-        title: 'Delete Photomemo error',
+        title: 'Delete Translation Error',
         content: e.message ?? e.toString(),
       );
     }
@@ -243,8 +240,16 @@ void addButton() async {
     if (searchKey == null || searchKey.trim().isEmpty) {
       results = await FirebaseController.getTranslations(_state.user.email);
     } else {
-      results = await FirebaseController.searchInTitle(
+      //results = await FirebaseController.getTranslations(_state.user.email);
+      if (_state._titleSearch) {
+        results = await FirebaseController.searchInTitle(
         email: _state.user.email, searchLabel: searchKey);
+        _state._titleSearch = false;
+      }else {
+        results = await FirebaseController.searchInText(
+        email: _state.user.email, searchLabel: searchKey);
+        _state._titleSearch = true;
+      }
     }
     _state.render(() => _state.translations = results);
   }

@@ -157,7 +157,7 @@ class FirebaseController {
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
-        .where(MyTranslation.TITLE, isEqualTo: searchLabel)
+        .where(MyTranslation.TEXT, isEqualTo: searchLabel)
        // .where(MyTranslation.CREATED_BY, isEqualTo: email)
         //.where(MyTranslation.TITLE, arrayContains: searchLabel.toLowerCase())        
        // .orderBy(MyTranslation.CREATED_ON, descending: true)
