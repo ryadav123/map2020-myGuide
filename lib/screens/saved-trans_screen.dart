@@ -118,7 +118,7 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
                       padding: EdgeInsets.all(8),
                   
                   child: Card(      
-                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(50)),                               
+                      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(40)),                               
                       color: Colors.yellow[200],
                       elevation: 20,
                       child: ListTile(
