@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:photomemo/screens/detailed_screen.dart';
+import 'package:myGuide/screens/detailed_screen.dart';
 //import 'package:photomemo/screens/edit_screen.dart';
 import 'package:myGuide/screens/home_screen.dart';
 import 'package:myGuide/screens/saved-trans_screen.dart';
@@ -34,7 +34,7 @@ class myGuide extends StatelessWidget {
         SignInScreen.routeName: (context) => SignInScreen(),
         HomeScreen.routeName: (context) => HomeScreen(),
         SavedTranslationScreen.routeName: (context) => SavedTranslationScreen(),
-        //DetailedScreen.routeName: (context) => DetailedScreen(),
+        DetailedScreen.routeName: (context) => DetailedScreen(),
         //EditScreen.routeName: (context) => EditScreen(),
         AddScreen.routeName: (context) => AddScreen(),
         SignUpScreen.routeName: (context) => SignUpScreen(),

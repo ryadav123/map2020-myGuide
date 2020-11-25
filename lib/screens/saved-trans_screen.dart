@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/add_screen.dart';
+import 'package:myGuide/screens/detailed_screen.dart';
 //import 'package:myGuide/screens/signin_screen.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -59,7 +60,7 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
                 key: formKey,
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: 'title/text search',
+                    hintText: 'search by title/text',
                     fillColor: Colors.white,
                     filled: true,
                   ),
@@ -209,12 +210,12 @@ void addButton() async {
       _state.render(() => delIndex = null);
       return;
     }
-    // await Navigator.pushNamed(_state.context, DetailedScreen.routeName,
-    //     arguments: {
-    //       'user': _state.user,
-    //       'photoMemo': _state.translations[index]
-    //     });
-    // _state.render(() {});
+    await Navigator.pushNamed(_state.context, DetailedScreen.routeName,
+        arguments: {
+          'user': _state.user,
+          'translation': _state.translations[index]
+        });
+    _state.render(() {});
   }
   void delete() async {
     try {
@@ -238,15 +239,13 @@ void addButton() async {
 
    void search() async {
     _state.formKey.currentState.save();
-
     var results;
     if (searchKey == null || searchKey.trim().isEmpty) {
       results = await FirebaseController.getTranslations(_state.user.email);
     } else {
-      results = await FirebaseController.searchImages(
-          email: _state.user.email, imageLabel: searchKey);
+      results = await FirebaseController.searchInTitle(
+        email: _state.user.email, searchLabel: searchKey);
     }
-
     _state.render(() => _state.translations = results);
   }
 

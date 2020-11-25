@@ -122,26 +122,59 @@ class FirebaseController {
     await FirebaseStorage.instance.ref().child(trans.photoPath).delete();
   }
 
-  static Future<List<MyTranslation>> searchImages({
+  static Future<List<MyTranslation>> searchInTitle({
     @required String email,
-    @required String imageLabel,
+    @required String searchLabel,
   }) async {
+    print('Inside controller\n');
     QuerySnapshot querySnapshot = await Firestore.instance
         .collection(MyTranslation.COLLECTION)
         .where(MyTranslation.CREATED_BY, isEqualTo: email)
-      //  .where(PhotoMemo.IMAGE_LABELS, arrayContains: imageLabel.toLowerCase())
-        .orderBy(MyTranslation.CREATED_ON, descending: true)
+        .where(MyTranslation.TITLE, isEqualTo: searchLabel)
+       // .where(MyTranslation.CREATED_BY, isEqualTo: email)
+        //.where(MyTranslation.TITLE, arrayContains: searchLabel.toLowerCase())        
+       // .orderBy(MyTranslation.CREATED_ON, descending: true)
         .getDocuments();
-
+    print(querySnapshot.documents.length);
     var result = <MyTranslation>[];
     if (querySnapshot != null && querySnapshot.documents.length != 0) {
       for (var doc in querySnapshot.documents) {
         result.add(MyTranslation.deserialize(doc.data, doc.documentID));
       }
     }
+    
+    print('searchLabel = $searchLabel\n');
+    print(result.length);
+    print(result);
     return result;
   }
 
+  static Future<List<MyTranslation>> searchInText({
+    @required String email,
+    @required String searchLabel,
+  }) async {
+    print('Inside controller\n');
+    QuerySnapshot querySnapshot = await Firestore.instance
+        .collection(MyTranslation.COLLECTION)
+        .where(MyTranslation.CREATED_BY, isEqualTo: email)
+        .where(MyTranslation.TITLE, isEqualTo: searchLabel)
+       // .where(MyTranslation.CREATED_BY, isEqualTo: email)
+        //.where(MyTranslation.TITLE, arrayContains: searchLabel.toLowerCase())        
+       // .orderBy(MyTranslation.CREATED_ON, descending: true)
+        .getDocuments();
+    print(querySnapshot.documents.length);
+    var result = <MyTranslation>[];
+    if (querySnapshot != null && querySnapshot.documents.length != 0) {
+      for (var doc in querySnapshot.documents) {
+        result.add(MyTranslation.deserialize(doc.data, doc.documentID));
+      }
+    }
+    
+    print('searchLabel = $searchLabel\n');
+    print(result.length);
+    print(result);
+    return result;
+  }
   // static Future<void> updatePhotoMemo(PhotoMemo photoMemo) async {
   //   photoMemo.updatedAt = DateTime.now();
   //   await Firestore.instance
