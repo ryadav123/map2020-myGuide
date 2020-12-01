@@ -1,16 +1,12 @@
 import 'dart:io';
-//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myGuide/controller/firebasecontroller.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/add_screen.dart';
 import 'package:myGuide/screens/saved-trans_screen.dart';
-//import 'package:photomemo/screens/detailed_screen.dart';
 import 'package:myGuide/screens/settings_screen.dart';
-//import 'package:photomemo/screens/sharedwith_screen.dart';
 import 'package:myGuide/screens/signin_screen.dart';
-//import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:myGuide/screens/view/myimageview.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -155,15 +155,7 @@ class _SavedTranslationState extends State<SavedTranslationScreen> {
                 ),
               ),
         
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       title: Text('Home'),
-      //       backgroundColor: Colors.blue
-      //     )
-      //   ],
-      // ),      
+        
     );
   }
 }

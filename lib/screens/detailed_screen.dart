@@ -1,17 +1,17 @@
-import 'dart:io';
-import 'package:flutter/services.dart';
+// import 'dart:io';
+// import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_saver/image_picker_saver.dart';
+// import 'package:flutter_email_sender/flutter_email_sender.dart';
+// import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:myGuide/model/translation.dart';
 import 'package:myGuide/screens/view/mydialog.dart';
 import 'package:myGuide/screens/view/myimageview.dart';
-import 'package:myGuide/screens/view/mydialog.dart';
-import 'package:myGuide/screens/view/myimageview.dart';
+// import 'package:myGuide/screens/view/mydialog.dart';
+// import 'package:myGuide/screens/view/myimageview.dart';
 import 'package:share/share.dart';
 
 class DetailedScreen extends StatefulWidget {
@@ -141,15 +141,18 @@ class _Controller {
 
 void sharememo(BuildContext context, MyTranslation translation ) async {
     try {
-    var response = await http.get(translation.photoURL);
-    var filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes);
-    List<String>imagePaths = [];
+  //  var response = await http.get(translation.photoURL);
+  //  var filePath = await ImagePickerSaver.saveFile(fileData: response.bodyBytes);
+   // List<String>imagePaths = [];
     
-    imagePaths.add(filePath);
+  //  imagePaths.add(filePath);
      final RenderBox box = context.findRenderObject();
-     Share.shareFiles(
-       imagePaths,
-       text: 'Title: ${translation.title} \n Original Text: ${translation.orgtext} \n Translated Text: ${translation.transtext} \n Created By: ${translation.createdBy} \n Created On: ${translation.createdOn} \n',
+    // Share.shareFiles(
+      // imagePaths,
+     // text: 'Title: ${translation.title} \n Original Text: ${translation.orgtext} \n Translated Text: ${translation.transtext} \n Created By: ${translation.createdBy} \n Created On: ${translation.createdOn} \n',
+       
+      Share.share(
+       'Title: ${translation.title} \n Original Text: ${translation.orgtext} \n Translated Text: ${translation.transtext} \n Created By: ${translation.createdBy} \n Created On: ${translation.createdOn} \n',
        subject: 'Translation Info',
        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
        );

@@ -1,5 +1,4 @@
 class MyTranslation {
-
   // field name for Firestore documents
   static const COLLECTION = 'translations';
   static const IMAGE_FOLDER = 'translationPictures'; // For storing translations pictures if any

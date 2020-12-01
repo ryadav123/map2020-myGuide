@@ -294,7 +294,19 @@ class _AddState extends State<AddScreen> {
                   iconSize: 35,
                   color: Colors.black,
                   icon: Icon(Icons.speaker_phone),
-                  onPressed: () => con.speak(out.text),
+                 // onPressed: () => con.speak(out.text),
+                 onPressed: () {
+                   if (out != null) {
+                    
+                     con.speak(out.text);
+                   } else {
+                      MyDialog.info(
+                      context: context,
+                      title: 'Speak Error',
+                      content: 'No translation yet',
+                      );
+                   }
+                 },
                 ),
                 
               ],
@@ -316,30 +328,13 @@ class _Controller {
   List<String> sharedWith = [];
   String uploadProgressMessage;
 
-  Future<void> speak(String value) async {  
-    try { 
-      if (value== null) {
-        MyDialog.info(
-        context: _state.context,
-        title: 'Speak Error',
-        content: 'No translation yet',
-      );
-      
-      }
-      else {
+  Future<void> speak(String value) async {    
     await _state.flutterTts.setVolume(1000);
     await _state.flutterTts.setPitch(1.0);
     await _state.flutterTts.speak(value);
-      }
-    } catch(e) {
-      MyDialog.info(
-        context: _state.context,
-        title: 'Speak Error',
-        content: e.message ?? e.toString(),
-      );
-    }
-  }
 
+    }
+  
   void listen() async {
     _state._speech = stt.SpeechToText();
     
@@ -501,11 +496,11 @@ class _Controller {
       //  sharedWith: sharedWith,
         createdOn: DateTime.now(),        
       );
-    //  print('In between');
+    
       p.docId = await FirebaseController.addTranslation(p);
-      print('Before insert');
+     
       _state.translations.insert(0, p);
-    //  print("down here");
+   
       MyDialog.circularProgressEnd(_state.context);
       Navigator.pop(_state.context);
       } else {
