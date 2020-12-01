@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+//import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-//import 'package:photomemo/main.dart';
 import 'package:myGuide/model/translation.dart';
 
 class FirebaseController {
@@ -98,22 +97,6 @@ class FirebaseController {
     return ref.documentID;
   }
 
-  // static Future<List<dynamic>> getImageLabels(File imageFile) async {
-  //   // Ml Kit
-  //   FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(imageFile);
-  //   ImageLabeler cloudLabeler = FirebaseVision.instance.cloudImageLabeler();
-  //   List<ImageLabel> cloudLabels = await cloudLabeler.processImage(visionImage);
-
-  //   var labels = <String>[];
-  //   for (ImageLabel label in cloudLabels) {
-  //     String text = label.text.toLowerCase();
-  //     double confidence = label.confidence;
-  //     if (confidence >= PhotoMemo.MIN_CONFIDENCE) labels.add(text);
-  //   }
-  //   cloudLabeler.close();
-  //   return labels;
-  // }
-
   static Future<void> deleteTranslation(MyTranslation trans) async {
     await Firestore.instance
         .collection(MyTranslation.COLLECTION)
@@ -135,7 +118,7 @@ class FirebaseController {
         //.where(MyTranslation.TITLE, arrayContains: searchLabel.toLowerCase())        
        // .orderBy(MyTranslation.CREATED_ON, descending: true)
         .getDocuments();
-    print(querySnapshot.documents.length);
+   // print(querySnapshot.documents.length);
     var result = <MyTranslation>[];
     if (querySnapshot != null && querySnapshot.documents.length != 0) {
       for (var doc in querySnapshot.documents) {
@@ -143,9 +126,9 @@ class FirebaseController {
       }
     }
     
-    print('searchLabel = $searchLabel\n');
-    print(result.length);
-    print(result);
+    // print('searchLabel = $searchLabel\n');
+    // print(result.length);
+    // print(result);
     return result;
   }
 
@@ -162,7 +145,7 @@ class FirebaseController {
         //.where(MyTranslation.TITLE, arrayContains: searchLabel.toLowerCase())        
        // .orderBy(MyTranslation.CREATED_ON, descending: true)
         .getDocuments();
-    print(querySnapshot.documents.length);
+  //  print(querySnapshot.documents.length);
     var result = <MyTranslation>[];
     if (querySnapshot != null && querySnapshot.documents.length != 0) {
       for (var doc in querySnapshot.documents) {
@@ -170,35 +153,12 @@ class FirebaseController {
       }
     }
     
-    print('searchLabel = $searchLabel\n');
-    print(result.length);
-    print(result);
+    // print('searchLabel = $searchLabel\n');
+    // print(result.length);
+    // print(result);
     return result;
   }
-  // static Future<void> updatePhotoMemo(PhotoMemo photoMemo) async {
-  //   photoMemo.updatedAt = DateTime.now();
-  //   await Firestore.instance
-  //       .collection(PhotoMemo.COLLECTION)
-  //       .document(photoMemo.docId)
-  //       .setData(photoMemo.serialize());
-  // }
-
-  // static Future<List<PhotoMemo>> getPhotoMemosSharedWithMe(String email) async {
-  //   QuerySnapshot querySnapshot = await Firestore.instance
-  //       .collection(PhotoMemo.COLLECTION)
-  //       .where(PhotoMemo.SHARED_WITH, arrayContains: email)
-  //       .orderBy(PhotoMemo.UPDATED_AT, descending: true)
-  //       .getDocuments();
-
-  //   var result = <PhotoMemo>[];
-  //   if (querySnapshot != null && querySnapshot.documents.length != 0) {
-  //     for (var doc in querySnapshot.documents) {
-  //       result.add(PhotoMemo.deserialize(doc.data, doc.documentID));
-  //     }
-  //   }
-  //   return result;
-  // }
-
+ 
   static Future<void> signUp(String email, String password) async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,

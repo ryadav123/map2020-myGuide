@@ -43,9 +43,101 @@ class _AddState extends State<AddScreen> {
     'Bulgarian',
     'Catalan',
     'Cebuano',
+    'Chinese',
+    'Corsican',
+    'Croatian',
+    'Czech',
+    'Danish',
+    'Dutch',
     'English',
+    'Esperanto',
+    'Estonian',
+    'Finnish',
+    'French',
+    'Frisian',
+    'Galician',
+    'Georgian',
+    'German',
+    'Greek',
+    'Gujarati',
+    'Haitian Creole',
+    'Hausa',
+    'Hawaiian',
+    'Hebrew',
     'Hindi',
+    'Hmong',
+    'Hungarian',
+    'Icelandic',
+    'Igbo',
+    'Indonesian',
+    'Irish',
+    'Italian',
+    'Japanese',
+    'Javanese',
+    'Kannada',
+    'Kazakh',
+    'Khmer',
+    'Kinyarwanda',
+    'Korean',
+    'Kurdish',
+    'Kyrgyz',
+    'Lao',
+    'Latin',
+    'Latvian',
+    'Lithuanian',
+    'Luzembourgish',
+    'Macedonian',
+    'Malagasy',
+    'Malay',
+    'Malayalam',
+    'Maltese',
+    'Maori',
+    'Marathi',
+    'Mongolian',
+    'Myanmar',
     'Nepali',
+    'Norwegian',
+    'Nyanja',
+    'Odia',
+    'Pashto',
+    'Persian',
+    'Polish',
+    'Portuguese',
+    'Punjabi',
+    'Romanian',
+    'Russian',
+    'Samoan',
+    'Scots Gaelic',
+    'Serbian',
+    'Sesotho',
+    'Shona',
+    'Sindhi',
+    'Sinhala',
+    'Slovak',
+    'Slovenian',
+    'Somali',
+    'Spanish',
+    'Sundanese',
+    'Swahili',
+    'Swedish',
+    'Tagalog',
+    'Tajik',
+    'Tamil',
+    'Tatar',
+    'Telugu',
+    'Thai',
+    'Turkish',
+    'Turkmen',
+    'Ukrainian',
+    'Urdu',
+    'Uyghur',
+    'Uzbek',
+    'Vietnamese',
+    'Welsh',
+    'Xhosa',
+    'Yiddish',
+    'Yoruba',
+    'Zulu'
   ];
   var _currentItemSelected = 'Select';
   GoogleTranslator translator = GoogleTranslator();
@@ -391,12 +483,194 @@ class _Controller {
         transcode = 'ca';
       } else if (_state._translateto == 'Cebuano') {
         transcode = 'ceb';
+      } else if (_state._translateto == 'Chinese') {
+        transcode = 'zh';
+      } else if (_state._translateto == 'Corsican') {
+        transcode = 'co';  
+      } else if (_state._translateto == 'Croatian') {
+        transcode = 'hr';
+      } else if (_state._translateto == 'Czech') {
+        transcode = 'cs';
+      } else if (_state._translateto == 'Danish') {
+        transcode = 'da';
+      } else if (_state._translateto == 'Ductch') {
+        transcode = 'nl';
       }  else if (_state._translateto == 'English') {
         transcode = 'en';
+      } else if (_state._translateto == 'Esperanto') {
+        transcode = 'eo';
+      } else if (_state._translateto == 'Estonian') {
+        transcode = 'et';
+      } else if (_state._translateto == 'Finnish') {
+        transcode = 'fi';
+      } else if (_state._translateto == 'French') {
+        transcode = 'fr';
+      } else if (_state._translateto == 'Frisian') {
+        transcode = 'fy';
+      } else if (_state._translateto == 'Galician') {
+        transcode = 'gl';
+      } else if (_state._translateto == 'Georgian') {
+        transcode = 'ka';
+      } else if (_state._translateto == 'German') {
+        transcode = 'de';
+      } else if (_state._translateto == 'Greek') {
+        transcode = 'el';
+      } else if (_state._translateto == 'Gujarati') {
+        transcode = 'gu';
+      } else if (_state._translateto == 'Haitian Creole') {
+        transcode = 'ht';
+      } else if (_state._translateto == 'Hausa') {
+        transcode = 'ha';
+      } else if (_state._translateto == 'Hawaiian') {
+        transcode = 'haw';
+      } else if (_state._translateto == 'Hebrew') {
+        transcode = 'he';
       } else if (_state._translateto == 'Hindi') {
         transcode = 'hi';
+      } else if (_state._translateto == 'Hmong') {
+        transcode = 'hmn';
+      } else if (_state._translateto == 'Hungarian') {
+        transcode = 'hu';
+      } else if (_state._translateto == 'Icelandic') {
+        transcode = 'is';
+      } else if (_state._translateto == 'Igbo') {
+        transcode = 'ig';
+      } else if (_state._translateto == 'Indonesian') {
+        transcode = 'id';
+      } else if (_state._translateto == 'Irish') {
+        transcode = 'ga';
+      } else if (_state._translateto == 'Italian') {
+        transcode = 'it';
+      } else if (_state._translateto == 'Japanese') {
+        transcode = 'ja';
+      } else if (_state._translateto == 'Kannada') {
+        transcode = 'kn';
+      } else if (_state._translateto == 'Kazakh') {
+        transcode = 'kk';
+      } else if (_state._translateto == 'Khmer') {
+        transcode = 'km';
+      } else if (_state._translateto == 'Kinyarwanda') {
+        transcode = 'rw';
+      } else if (_state._translateto == 'Korean') {
+        transcode = 'ko';
+      } else if (_state._translateto == 'Kurdish') {
+        transcode = 'ku';
+      } else if (_state._translateto == 'Kyrgyz') {
+        transcode = 'ky';
+      } else if (_state._translateto == 'Lao') {
+        transcode = 'lo';
+      } else if (_state._translateto == 'Latin') {
+        transcode = 'la';
+      } else if (_state._translateto == 'Latvian') {
+        transcode = 'lv';
+      } else if (_state._translateto == 'Lithuanian') {
+        transcode = 'lt';
+      } else if (_state._translateto == 'Luxembourgish') {
+        transcode = 'lb';
+      } else if (_state._translateto == 'Macedonian') {
+        transcode = 'mk';
+      } else if (_state._translateto == 'Malagasy') {
+        transcode = 'mg';
+      } else if (_state._translateto == 'Malay') {
+        transcode = 'ms';
+      } else if (_state._translateto == 'Malayalam') {
+        transcode = 'ml';
+      } else if (_state._translateto == 'Maltese') {
+        transcode = 'mt';
+      } else if (_state._translateto == 'Maori') {
+        transcode = 'mi';
+      } else if (_state._translateto == 'Marathi') {
+        transcode = 'mr';
+      } else if (_state._translateto == 'Mongolian') {
+        transcode = 'mn';
+      } else if (_state._translateto == 'Myanmar') {
+        transcode = 'my';
       } else if (_state._translateto == 'Nepali') {
         transcode = 'ne';
+      } else if (_state._translateto == 'Norwegian') {
+        transcode = 'no';
+      } else if (_state._translateto == 'Nyanja') {
+        transcode = 'ny';
+      } else if (_state._translateto == 'Odia') {
+        transcode = 'or';
+      } else if (_state._translateto == 'Pashto') {
+        transcode = 'ps';
+      } else if (_state._translateto == 'Persian') {
+        transcode = 'fa';
+      } else if (_state._translateto == 'Polish') {
+        transcode = 'pl';
+      } else if (_state._translateto == 'Potuguese') {
+        transcode = 'pt';
+      } else if (_state._translateto == 'Punjabi') {
+        transcode = 'pa';
+      } else if (_state._translateto == 'Romanian') {
+        transcode = 'ro';
+      } else if (_state._translateto == 'Russian') {
+        transcode = 'ru';
+      } else if (_state._translateto == 'Samoan') {
+        transcode = 'sm';
+      } else if (_state._translateto == 'Scots Gaelic') {
+        transcode = 'gd';
+      } else if (_state._translateto == 'Serbian') {
+        transcode = 'sr';
+      } else if (_state._translateto == 'Sesotho') {
+        transcode = 'st';
+      } else if (_state._translateto == 'Shona') {
+        transcode = 'sn';
+      } else if (_state._translateto == 'Sindhi') {
+        transcode = 'sd';
+      } else if (_state._translateto == 'Sinhala') {
+        transcode = 'si';
+      } else if (_state._translateto == 'Slovak') {
+        transcode = 'sk';
+      } else if (_state._translateto == 'Slovenian') {
+        transcode = 'sl';
+      } else if (_state._translateto == 'Somali') {
+        transcode = 'so';
+      } else if (_state._translateto == 'Spanish') {
+        transcode = 'es';
+      } else if (_state._translateto == 'Sundanese') {
+        transcode = 'su';
+      } else if (_state._translateto == 'Swahili') {
+        transcode = 'sw';
+      } else if (_state._translateto == 'Swedish') {
+        transcode = 'sv';
+      } else if (_state._translateto == 'Tagalog') {
+        transcode = 'tl';
+      } else if (_state._translateto == 'Tajik') {
+        transcode = 'tg';
+      } else if (_state._translateto == 'Tamil') {
+        transcode = 'ta';
+      } else if (_state._translateto == 'Tatar') {
+        transcode = 'tt';
+      } else if (_state._translateto == 'Telugu') {
+        transcode = 'te';
+      } else if (_state._translateto == 'Thai') {
+        transcode = 'th';
+      } else if (_state._translateto == 'Turkish') {
+        transcode = 'tr';
+      } else if (_state._translateto == 'Turkmen') {
+        transcode = 'tk';
+      } else if (_state._translateto == 'Ukrainian') {
+        transcode = 'uk';
+      } else if (_state._translateto == 'Urdu') {
+        transcode = 'ur';
+      } else if (_state._translateto == 'Uyghur') {
+        transcode = 'ug';
+      } else if (_state._translateto == 'Uzbek') {
+        transcode = 'uz';
+      } else if (_state._translateto == 'Vietnamese') {
+        transcode = 'vi';
+      } else if (_state._translateto == 'Welsh') {
+        transcode = 'cy';
+      } else if (_state._translateto == 'Xhosa') {
+        transcode = 'xh';
+      } else if (_state._translateto == 'Yiddish') {
+        transcode = 'yi';
+      } else if (_state._translateto == 'Yoruba') {
+        transcode = 'yo';
+      } else if (_state._translateto == 'Zulu') {
+        transcode = 'zu';
       } else {
         transcode = null;
       }
